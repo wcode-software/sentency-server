@@ -2,11 +2,11 @@ val kotlin_version: String by project
 val exposed_version = "0.24.1"
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
 }
 
 group = "org.wcode"
-version = "0.0.1"
+version = "0.1.0"
 
 repositories {
     mavenLocal()
@@ -47,6 +47,15 @@ tasks.test {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
+    }
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "wcode.software.ApplicationKt"
+    }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
     }
 }
 

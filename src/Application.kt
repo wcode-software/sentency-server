@@ -28,7 +28,7 @@ fun main() {
 fun getConfiguredOpenApiPlugin() = OpenApiPlugin(
     OpenApiOptions(
         Info().apply {
-            version("1.0")
+            version("0.1.0")
             description("Sentency API")
         }
     ).apply {
