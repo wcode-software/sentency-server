@@ -15,7 +15,7 @@ object AuthorRoutes {
             get("/authors") {
                 it.json(authorController.getAll())
             }
-            post("/authors/quotes/:") {
+            post("/authors/quotes/") {
                 val requestID = it.body<RequestID>()
                 it.json(authorController.getQuotesFromAuthor(requestID.id))
             }
