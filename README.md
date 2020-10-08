@@ -27,3 +27,19 @@ docker run -p 5000:7000 sentency-server:latest
 
 Open the address **http://localhost:5000/docs** on your browser and you will see this project Swagger with
 APIs.
+
+## Environment variables
+
+The project use .env libraries to load environment variables. To change any parameter change the value inside 
+the file **development.env** that's inside the resource folder.
+
+If it's necessary to create a new .env file (production file for example), the file should comply with the following
+pattern:
+
+```bash
+ENVIRONMENT = development
+PREFIX = server
+```
+
+Inside the **Application.kt** the *loadEnvVariables()* function need to be update to match the new file 
+name and folder parameters

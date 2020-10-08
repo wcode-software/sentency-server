@@ -1,12 +1,11 @@
-val kotlin_version: String by project
-val exposed_version = "0.24.1"
+val exposed_version = "0.25.1"
 
 plugins {
     kotlin("jvm") version "1.4.0"
 }
 
 group = "org.wcode"
-version = "0.1.0"
+version = "0.1.1"
 
 repositories {
     mavenLocal()
@@ -21,8 +20,8 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     //Javalin
-    implementation("io.javalin", "javalin", "3.9.1")
-    implementation("io.javalin", "javalin-openapi", "3.9.1")
+    implementation("io.javalin", "javalin", "3.11.0")
+    implementation("io.javalin", "javalin-openapi", "3.11.0")
 
     // OpenAPI
     implementation("org.slf4j", "slf4j-simple", "1.7.30")
@@ -38,6 +37,12 @@ dependencies {
 
     //SQL Connection
     implementation("org.xerial:sqlite-jdbc:3.30.1")
+
+    // PostgreSQL
+    implementation("org.postgresql:postgresql:42.2.2")
+
+    // Dotenv
+    implementation("io.github.cdimascio:dotenv-kotlin:6.2.1")
 
     //Tests jUnit5
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
