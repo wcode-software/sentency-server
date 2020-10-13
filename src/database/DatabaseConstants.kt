@@ -5,6 +5,7 @@ object DatabaseConstants {
     object Quote {
         const val author = "quote_author"
         const val quote = "quote_message"
+        const val timestamp = "quote_timestamp"
     }
 
     object Author {

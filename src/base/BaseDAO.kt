@@ -14,4 +14,6 @@ interface BaseDAO<T : BaseDTO, Q : UUIDEntity> {
     fun remove(id: String)
 
     fun update(obj: T)
+
+    fun getCount(): Int
 }

@@ -31,7 +31,7 @@ fun main() {
 fun loadEnvVariables() {
     val dotenv = dotenv {
         directory = "./resources"
-        filename = "production.env"
+        filename = "development.env"
     }
     Environment.startEnvironment(dotenv)
 }
@@ -39,7 +39,7 @@ fun loadEnvVariables() {
 fun getConfiguredOpenApiPlugin() = OpenApiPlugin(
     OpenApiOptions(
         Info().apply {
-            version("0.1.1")
+            version("0.1.2")
             description("Sentency API")
         }
     ).apply {

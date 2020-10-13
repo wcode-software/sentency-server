@@ -1,13 +1,13 @@
 package wcode.software.database.controllers
 
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import wcode.software.database.base.BaseDAO
 import wcode.software.database.models.Author
+import wcode.software.database.schema.QuoteDB
 import wcode.software.database.tables.AuthorDB
 import wcode.software.dtos.AuthorDTO
 import wcode.software.dtos.QuoteDTO
-import wcode.software.models.Quote
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,6 +22,12 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
         }
 
         return authors
+    }
+
+    override fun getCount(): Int {
+        return transaction {
+            Author.all().count().toInt()
+        }
     }
 
     override fun insert(obj: AuthorDTO) {
@@ -47,6 +53,17 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
                 author.name = obj.name
                 author.picUrl = obj.picUrl
             }
+        }
+    }
+
+    fun getAuthorWithMostQuotes(): AuthorDTO {
+        return transaction {
+            val expression = wrapAsExpression<Int>(QuoteDB.slice(QuoteDB.id.count()).select {
+                AuthorDB.id eq QuoteDB.author
+            })
+
+            val author = Author.all().orderBy(Pair(expression, SortOrder.DESC)).first()
+            AuthorDTO(author)
         }
     }
 

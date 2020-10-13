@@ -13,4 +13,5 @@ class Quote(id: EntityID<UUID>) : UUIDEntity(id) {
 
     var author by Author referencedOn QuoteDB.author
     var quote by QuoteDB.quote
+    var timestamp by QuoteDB.timestap
 }

@@ -15,8 +15,14 @@ object QuoteRoutes {
             get("/quotes") {
                 it.json(quoteController.getAll())
             }
+            get("/quotes/count") {
+                it.json(quoteController.getCount())
+            }
             get("/quotes/random") {
                 it.json(quoteController.getRandom())
+            }
+            get("/quotes/month/count"){
+                it.json(quoteController.getMonthCount())
             }
             post("/quotes/add") {
                 val quoteDTO = it.body<QuoteDTO>()

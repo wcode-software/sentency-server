@@ -15,9 +15,15 @@ object AuthorRoutes {
             get("/authors") {
                 it.json(authorController.getAll())
             }
+            get("/authors/count") {
+                it.json(authorController.getCount())
+            }
             post("/authors/quotes/") {
                 val requestID = it.body<RequestID>()
                 it.json(authorController.getQuotesFromAuthor(requestID.id))
+            }
+            get("/authors/top") {
+                it.json(authorController.getAuthorWithMostQuotes())
             }
             post("/authors/add") {
                 val response = try {
