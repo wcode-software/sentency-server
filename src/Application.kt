@@ -31,7 +31,7 @@ fun main() {
 fun loadEnvVariables() {
     val dotenv = dotenv {
         directory = "./resources"
-        filename = "development.env"
+        filename = "production.env"
     }
     Environment.startEnvironment(dotenv)
 }
