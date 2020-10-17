@@ -3,23 +3,22 @@ package wcode.software.database.controllers
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import wcode.software.database.base.BaseDAO
-import wcode.software.database.models.Author
+import wcode.software.database.models.AuthorSchema
 import wcode.software.database.schema.QuoteDB
 import wcode.software.dtos.QuoteDTO
-import wcode.software.models.Quote
+import wcode.software.models.QuoteSchema
 import wcode.software.utils.CalendarUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
-class QuoteDAO : BaseDAO<QuoteDTO, Quote> {
+class QuoteDAO : BaseDAO<QuoteDTO, QuoteSchema> {
 
     override fun getAll(): ArrayList<QuoteDTO> {
         val quotes = arrayListOf<QuoteDTO>()
         transaction {
-            Quote.all().forEach { quote ->
+            QuoteSchema.all().forEach { quote ->
                 try {
                     quotes.add(QuoteDTO(quote))
                 } catch (e: Exception) {
@@ -32,7 +31,7 @@ class QuoteDAO : BaseDAO<QuoteDTO, Quote> {
 
     override fun getCount(): Int {
         return transaction {
-            Quote.all().count().toInt()
+            QuoteSchema.all().count().toInt()
         }
     }
 
@@ -46,12 +45,12 @@ class QuoteDAO : BaseDAO<QuoteDTO, Quote> {
     }
 
     fun getRandom(): QuoteDTO {
-        return QuoteDTO(Quote.all().toList().random())
+        return QuoteDTO(QuoteSchema.all().toList().random())
     }
 
     override fun insert(obj: QuoteDTO) {
         transaction {
-            val mAuthor = Author.findById(UUID.fromString(obj.authorId))
+            val mAuthor = AuthorSchema.findById(UUID.fromString(obj.authorId))
             mAuthor?.let {
                 QuoteDB.insert {
                     it[author] = mAuthor.id
@@ -64,7 +63,7 @@ class QuoteDAO : BaseDAO<QuoteDTO, Quote> {
 
     override fun remove(id: String) {
         transaction {
-            val quote = Quote.findById(UUID.fromString(id))
+            val quote = QuoteSchema.findById(UUID.fromString(id))
             quote?.delete()
         }
     }
@@ -72,8 +71,8 @@ class QuoteDAO : BaseDAO<QuoteDTO, Quote> {
     override fun update(obj: QuoteDTO) {
         transaction {
             obj.id?.let {
-                val quote = Quote.findById(UUID.fromString(it)) ?: return@transaction
-                val mAuthor = Author.findById(UUID.fromString(obj.authorId)) ?: return@transaction
+                val quote = QuoteSchema.findById(UUID.fromString(it)) ?: return@transaction
+                val mAuthor = AuthorSchema.findById(UUID.fromString(obj.authorId)) ?: return@transaction
                 quote.quote = obj.quote
                 quote.author = mAuthor
                 quote.timestamp = obj.timestamp

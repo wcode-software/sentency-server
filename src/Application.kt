@@ -11,6 +11,7 @@ import wcode.software.config.Environment
 import wcode.software.database.DatabaseFactory
 import wcode.software.routes.AuthorRoutes
 import wcode.software.routes.QuoteRoutes
+import wcode.software.routes.UserRoutes
 
 fun main() {
 
@@ -24,14 +25,17 @@ fun main() {
         config.enableDevLogging()
     }.start()
 
-    AuthorRoutes.addRoutes(app)
-    QuoteRoutes.addRoutes(app)
+    val routesList = listOf(AuthorRoutes, QuoteRoutes, UserRoutes)
+
+    routesList.forEach { route ->
+        route.addRoutes(app)
+    }
 }
 
 fun loadEnvVariables() {
     val dotenv = dotenv {
         directory = "./resources"
-        filename = "production.env"
+        filename = "development.env"
     }
     Environment.startEnvironment(dotenv)
 }
@@ -39,7 +43,7 @@ fun loadEnvVariables() {
 fun getConfiguredOpenApiPlugin() = OpenApiPlugin(
     OpenApiOptions(
         Info().apply {
-            version("0.1.2")
+            version("0.2.0")
             description("Sentency API")
         }
     ).apply {

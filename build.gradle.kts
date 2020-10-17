@@ -2,10 +2,12 @@ val exposed_version = "0.25.1"
 
 plugins {
     kotlin("jvm") version "1.4.0"
+    jacoco
+    id("org.sonarqube") version "3.0"
 }
 
 group = "org.wcode"
-version = "0.1.2"
+version = "0.2.0"
 
 repositories {
     mavenLocal()
@@ -44,15 +46,20 @@ dependencies {
     // Dotenv
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.1")
 
+    // Bcrypt
+    implementation("at.favre.lib:bcrypt:0.9.0")
+
     //Tests jUnit5
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
 }
+
 
 tasks.test {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
     }
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.withType<Jar> {
@@ -64,8 +71,30 @@ tasks.withType<Jar> {
     }
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        csv.isEnabled = false
+        html.isEnabled = true
+    }
+    finalizedBy(tasks.sonarqube)
+}
+
 kotlin.sourceSets["main"].kotlin.srcDirs("src")
 kotlin.sourceSets["test"].kotlin.srcDirs("test")
 
 sourceSets["main"].resources.srcDirs("resources")
 sourceSets["test"].resources.srcDirs("testresources")
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "walterjgsp_sentency-server")
+        property("sonar.core.codeCoveragePlugin", "jacoco")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.organization", "walterjgsp-github")
+        property("sonar.login", "1f9a62bc1175a7ec91a428c3899fa033167ddd05")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.tests", "test")
+        property("sonar.sources", "src")
+    }
+}

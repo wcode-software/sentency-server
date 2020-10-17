@@ -3,7 +3,7 @@ package wcode.software.database.controllers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import wcode.software.database.base.BaseDAO
-import wcode.software.database.models.Author
+import wcode.software.database.models.AuthorSchema
 import wcode.software.database.schema.QuoteDB
 import wcode.software.database.tables.AuthorDB
 import wcode.software.dtos.AuthorDTO
@@ -11,12 +11,12 @@ import wcode.software.dtos.QuoteDTO
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AuthorDAO : BaseDAO<AuthorDTO, Author> {
+class AuthorDAO : BaseDAO<AuthorDTO, AuthorSchema> {
 
     override fun getAll(): ArrayList<AuthorDTO> {
         val authors = arrayListOf<AuthorDTO>()
         transaction {
-            authors.addAll(Author.all().map { author ->
+            authors.addAll(AuthorSchema.all().map { author ->
                 AuthorDTO(author)
             })
         }
@@ -26,7 +26,7 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
 
     override fun getCount(): Int {
         return transaction {
-            Author.all().count().toInt()
+            AuthorSchema.all().count().toInt()
         }
     }
 
@@ -41,7 +41,7 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
 
     override fun remove(id: String) {
         transaction {
-            val author = Author.findById(UUID.fromString(id))
+            val author = AuthorSchema.findById(UUID.fromString(id))
             author?.delete()
         }
     }
@@ -49,7 +49,7 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
     override fun update(obj: AuthorDTO) {
         transaction {
             obj.id?.let {
-                val author = Author.findById(UUID.fromString(it)) ?: return@transaction
+                val author = AuthorSchema.findById(UUID.fromString(it)) ?: return@transaction
                 author.name = obj.name
                 author.picUrl = obj.picUrl
             }
@@ -62,7 +62,7 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
                 AuthorDB.id eq QuoteDB.author
             })
 
-            val author = Author.all().orderBy(Pair(expression, SortOrder.DESC)).first()
+            val author = AuthorSchema.all().orderBy(Pair(expression, SortOrder.DESC)).first()
             AuthorDTO(author)
         }
     }
@@ -70,7 +70,7 @@ class AuthorDAO : BaseDAO<AuthorDTO, Author> {
     fun getQuotesFromAuthor(authorId: String): ArrayList<QuoteDTO> {
         val quotes = arrayListOf<QuoteDTO>()
         transaction {
-            val author = Author.findById(UUID.fromString(authorId)) ?: return@transaction
+            val author = AuthorSchema.findById(UUID.fromString(authorId)) ?: return@transaction
             author.quotes.forEach { quote ->
                 try {
                     quotes.add(QuoteDTO(quote))

@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import wcode.software.config.Environment
+import wcode.software.data.database.tables.UserDB
 import wcode.software.database.schema.QuoteDB
 import wcode.software.database.tables.AuthorDB
 import java.io.File
@@ -18,6 +19,7 @@ object DatabaseFactory {
         transaction {
             create(AuthorDB)
             create(QuoteDB)
+            create(UserDB)
         }
     }
 
