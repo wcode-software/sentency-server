@@ -3,7 +3,6 @@ package wcode.software.database
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import wcode.software.config.Environment
 import wcode.software.data.database.tables.UserDB
@@ -38,7 +37,7 @@ object DatabaseFactory {
     }
 
     private fun connectPostgre(){
-        Database.connect("jdbc:postgresql://sentency_database:5432/${Environment.db_name}", driver = "org.postgresql.Driver",
-            user = Environment.db_user, password = Environment.db_password)
+        Database.connect("jdbc:postgresql://sentency_database:5432/${Environment.dbName}", driver = "org.postgresql.Driver",
+            user = Environment.dbUser, password = Environment.dbPassword)
     }
 }

@@ -2,8 +2,7 @@ package wcode.software.routes
 
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder
-import io.javalin.apibuilder.ApiBuilder.path
-import io.javalin.apibuilder.ApiBuilder.post
+import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.Context
 import io.javalin.plugin.openapi.annotations.OpenApi
 import io.javalin.plugin.openapi.annotations.OpenApiContent
@@ -25,6 +24,7 @@ object UserRoutes : BaseRoutes {
             path(basePath) {
                 post("/create", ::createUser)
                 post("/authenticate", ::authenticateUser)
+                get("/validate", ::validateToken)
             }
         }
     }
@@ -44,7 +44,7 @@ object UserRoutes : BaseRoutes {
             userController.insert(newUser)
             Response(
                 code = 200,
-                message = "User successfully created"
+                message = AuthController.generateToken(newUser)
             )
         } catch (e: Exception) {
             Response(
@@ -71,7 +71,7 @@ object UserRoutes : BaseRoutes {
             if (valid) {
                 Response(
                     code = 200,
-                    message = "User successfully authorized"
+                    message = AuthController.generateToken(dbUser)
                 )
             } else {
                 Response(
@@ -83,6 +83,26 @@ object UserRoutes : BaseRoutes {
             Response(
                 code = 604,
                 message = "User not found in the database"
+            )
+        }
+
+        ctx.json(response)
+    }
+
+    private fun validateToken(ctx: Context) {
+        val response = try {
+            val header =
+                ctx.header("Authorization") ?: throw NullPointerException("No Authorization found in header")
+
+            AuthController.verifier.verify(header)
+            Response(
+                code = 200,
+                message = "Token valid authorized"
+            )
+        } catch (e: Exception) {
+            Response(
+                code = 403,
+                message = "Problem with authorization: ${e.message}"
             )
         }
 

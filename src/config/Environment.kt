@@ -10,20 +10,26 @@ object Environment {
             field = value
         }
 
-    var db_user: String = ""
+    var dbUser: String = ""
         get() = field
         private set(value) {
             field = value
         }
 
 
-    var db_password: String = ""
+    var dbPassword: String = ""
         get() = field
         private set(value) {
             field = value
         }
 
-    var db_name: String = ""
+    var dbName: String = ""
+        get() = field
+        private set(value) {
+            field = value
+        }
+
+    var jwtSecretkey: String = ""
         get() = field
         private set(value) {
             field = value
@@ -31,8 +37,9 @@ object Environment {
 
     fun startEnvironment(dotenv: Dotenv) {
         environment = dotenv["ENVIRONMENT"]
-        db_user = dotenv["DB_USER"]
-        db_name = dotenv["DB_NAME"]
-        db_password = dotenv["DB_PASSWORD"]
+        dbUser = dotenv["DB_USER"]
+        dbName = dotenv["DB_NAME"]
+        dbPassword = dotenv["DB_PASSWORD"]
+        jwtSecretkey = dotenv["JWT_SECRET_KEY"]
     }
 }

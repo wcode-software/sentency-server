@@ -37,6 +37,9 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposed_version)
     implementation("org.jetbrains.exposed", "exposed-jodatime", exposed_version)
 
+    // JWT
+    implementation("com.auth0:java-jwt:3.11.0")
+
     //SQL Connection
     implementation("org.xerial:sqlite-jdbc:3.30.1")
 
