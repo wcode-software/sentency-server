@@ -25,7 +25,7 @@ fun main() {
         config.enableDevLogging()
     }.start()
 
-    val routesList = listOf(AuthorRoutes, QuoteRoutes, UserRoutes)
+    val routesList = listOf(UserRoutes, AuthorRoutes, QuoteRoutes)
 
     routesList.forEach { route ->
         route.addRoutes(app)
@@ -43,7 +43,7 @@ fun loadEnvVariables() {
 fun getConfiguredOpenApiPlugin() = OpenApiPlugin(
     OpenApiOptions(
         Info().apply {
-            version("0.2.0")
+            version("0.2.1")
             description("Sentency API")
         }
     ).apply {

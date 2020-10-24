@@ -31,7 +31,7 @@ object AuthorRoutes : BaseRoutes {
                 delete("/delete", ::deleteAuthor)
                 put("/update", ::updateAuthor)
             }
-        }.before(AuthController::headerDecoderHandler)
+        }.before(basePath, AuthController::headerDecoderHandler)
     }
 
     @OpenApi(
