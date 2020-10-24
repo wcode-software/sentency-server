@@ -30,7 +30,7 @@ object QuoteRoutes : BaseRoutes {
                 delete("/delete", ::deleteQuote)
                 put("/update", ::updateQuote)
             }
-        }.before(AuthController::headerDecoderHandler)
+        }.before(basePath, AuthController::headerDecoderHandler)
     }
 
     @OpenApi(

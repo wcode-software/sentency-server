@@ -4,10 +4,10 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import io.javalin.core.util.Header
 import io.javalin.http.Context
 import wcode.software.config.Environment
 import wcode.software.data.dtos.UserDTO
-import wcode.software.models.Response
 import java.lang.NullPointerException
 
 object AuthController {
@@ -34,8 +34,12 @@ object AuthController {
 
 
     fun headerDecoderHandler(ctx: Context): Context {
-        val token = ctx.header("Authorization") ?: throw NullPointerException("Token not found in header")
-        ctx.attribute("TOKEN", token)
+        if (ctx.method() == "OPTIONS") {
+            ctx.header(Header.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+        } else {
+            val token = ctx.header("Authorization") ?: throw NullPointerException("Token not found in header")
+            ctx.attribute("TOKEN", token)
+        }
         return ctx
     }
 }
