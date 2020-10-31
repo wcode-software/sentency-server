@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "org.wcode"
-version = "0.2.0"
+version = "0.2.3"
 
 repositories {
     mavenLocal()
@@ -69,6 +69,7 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "wcode.software.ApplicationKt"
     }
+    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))
     }

@@ -12,4 +12,6 @@ class UserSchema(id: EntityID<Int>) : IntEntity(id) {
     var email by UserDB.email
     var password by UserDB.password
     var role by UserDB.role
+    var picUrl by UserDB.picUrl
+    var birthday by UserDB.birthday
 }

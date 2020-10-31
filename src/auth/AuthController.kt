@@ -32,7 +32,6 @@ object AuthController {
             .sign(algorithm)
     }
 
-
     fun headerDecoderHandler(ctx: Context): Context {
         if (ctx.method() == "OPTIONS") {
             ctx.header(Header.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")

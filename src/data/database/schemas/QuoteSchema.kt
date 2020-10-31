@@ -14,4 +14,5 @@ class QuoteSchema(id: EntityID<UUID>) : UUIDEntity(id) {
     var author by AuthorSchema referencedOn QuoteDB.author
     var quote by QuoteDB.quote
     var timestamp by QuoteDB.timestap
+    var type by QuoteDB.type
 }
