@@ -1,13 +1,13 @@
 val exposed_version = "0.25.1"
 
 plugins {
-    kotlin("jvm") version "1.4.1"
+    kotlin("jvm") version "1.4.10"
     jacoco
     id("org.sonarqube") version "3.0"
 }
 
 group = "org.wcode"
-version = "0.2.3"
+version = "0.2.4"
 
 repositories {
     mavenLocal()
