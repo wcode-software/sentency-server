@@ -56,14 +56,19 @@ class AuthorDAO : BaseDAO<AuthorDTO, AuthorSchema> {
         }
     }
 
-    fun getAuthorWithMostQuotes(): AuthorDTO {
+    fun getAuthorWithMostQuotes(): AuthorDTO? {
         return transaction {
             val expression = wrapAsExpression<Int>(QuoteDB.slice(QuoteDB.id.count()).select {
                 AuthorDB.id eq QuoteDB.author
             })
 
-            val author = AuthorSchema.all().orderBy(Pair(expression, SortOrder.DESC)).first()
-            AuthorDTO(author)
+            val collection = AuthorSchema.all().orderBy(Pair(expression, SortOrder.DESC))
+            if (!collection.empty()) {
+                val author = AuthorSchema.all().orderBy(Pair(expression, SortOrder.DESC)).first()
+                AuthorDTO(author)
+            } else {
+                null
+            }
         }
     }
 

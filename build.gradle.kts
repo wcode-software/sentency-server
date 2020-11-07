@@ -1,7 +1,7 @@
 val exposed_version = "0.25.1"
 
 plugins {
-    kotlin("jvm") version "1.4.0"
+    kotlin("jvm") version "1.4.1"
     jacoco
     id("org.sonarqube") version "3.0"
 }

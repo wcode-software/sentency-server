@@ -72,7 +72,10 @@ object AuthorRoutes : BaseRoutes {
         responses = [OpenApiResponse("200", [OpenApiContent(AuthorDTO::class)])]
     )
     private fun getTopAuthor(ctx: Context) {
-        ctx.json(authorController.getAuthorWithMostQuotes())
+        val author = authorController.getAuthorWithMostQuotes()
+        author?.let {
+            ctx.json(it)
+        }
     }
 
     @OpenApi(
