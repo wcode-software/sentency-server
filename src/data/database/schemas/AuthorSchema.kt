@@ -1,11 +1,10 @@
-package wcode.software.database.models
+package wcode.software.data.database.schemas
 
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import wcode.software.database.schema.QuoteDB
-import wcode.software.database.tables.AuthorDB
-import wcode.software.models.QuoteSchema
+import wcode.software.data.database.tables.QuoteDB
+import wcode.software.data.database.tables.AuthorDB
 import java.util.*
 
 class AuthorSchema(id: EntityID<UUID>) : UUIDEntity(id) {

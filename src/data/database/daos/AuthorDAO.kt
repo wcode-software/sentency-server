@@ -1,11 +1,11 @@
-package wcode.software.database.controllers
+package wcode.software.data.database.daos
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import wcode.software.database.base.BaseDAO
-import wcode.software.database.models.AuthorSchema
-import wcode.software.database.schema.QuoteDB
-import wcode.software.database.tables.AuthorDB
+import wcode.software.base.BaseDAO
+import wcode.software.data.database.schemas.AuthorSchema
+import wcode.software.data.database.tables.QuoteDB
+import wcode.software.data.database.tables.AuthorDB
 import wcode.software.dtos.AuthorDTO
 import wcode.software.dtos.QuoteDTO
 import java.util.*

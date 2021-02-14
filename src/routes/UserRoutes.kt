@@ -14,10 +14,10 @@ import wcode.software.data.database.daos.UserDAO
 import wcode.software.data.dtos.UserDTO
 import wcode.software.models.Response
 
-object UserRoutes : BaseRoutes {
+class UserRoutes : BaseRoutes() {
 
     private val userController = UserDAO()
-    private val basePath: String = "/users"
+    override val basePath: String = "/users"
 
     override fun addRoutes(javalin: Javalin) {
         javalin.routes {

@@ -1,7 +1,7 @@
 package wcode.software.dtos
 
 import wcode.software.base.BaseDTO
-import wcode.software.models.QuoteSchema
+import wcode.software.data.database.schemas.QuoteSchema
 import java.util.*
 
 data class QuoteDTO(

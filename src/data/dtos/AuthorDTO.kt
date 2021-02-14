@@ -1,7 +1,7 @@
 package wcode.software.dtos
 
 import wcode.software.base.BaseDTO
-import wcode.software.database.models.AuthorSchema
+import wcode.software.data.database.schemas.AuthorSchema
 
 data class AuthorDTO(
     val id: String? = null,

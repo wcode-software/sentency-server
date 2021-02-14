@@ -1,13 +1,14 @@
-val exposed_version = "0.25.1"
+val exposed_version = "0.29.1"
+val javalin_version = "3.13.0"
 
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.30"
     jacoco
     id("org.sonarqube") version "3.0"
 }
 
 group = "org.wcode"
-version = "0.2.4"
+version = "0.2.5"
 
 repositories {
     mavenLocal()
@@ -22,8 +23,8 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     //Javalin
-    implementation("io.javalin", "javalin", "3.11.0")
-    implementation("io.javalin", "javalin-openapi", "3.11.0")
+    implementation("io.javalin", "javalin", javalin_version)
+    implementation("io.javalin", "javalin-openapi", javalin_version)
 
     // OpenAPI
     implementation("org.slf4j", "slf4j-simple", "1.7.30")

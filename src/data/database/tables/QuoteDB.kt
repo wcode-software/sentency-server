@@ -1,11 +1,8 @@
-package wcode.software.database.schema
+package wcode.software.data.database.tables
 
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.jodatime.date
-import wcode.software.data.database.tables.UserDB.nullable
-import wcode.software.database.DatabaseConstants
-import wcode.software.database.tables.AuthorDB
+import wcode.software.data.database.DatabaseConstants
 
 object QuoteDB : UUIDTable() {
     val author = reference(DatabaseConstants.Quote.author, AuthorDB, onDelete = ReferenceOption.CASCADE)

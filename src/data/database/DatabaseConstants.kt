@@ -1,4 +1,4 @@
-package wcode.software.database
+package wcode.software.data.database
 
 object DatabaseConstants {
 

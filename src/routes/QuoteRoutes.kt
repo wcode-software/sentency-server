@@ -9,15 +9,15 @@ import io.javalin.plugin.openapi.annotations.OpenApiRequestBody
 import io.javalin.plugin.openapi.annotations.OpenApiResponse
 import wcode.software.auth.AuthController
 import wcode.software.base.BaseRoutes
-import wcode.software.database.controllers.QuoteDAO
+import wcode.software.data.database.daos.QuoteDAO
 import wcode.software.dtos.QuoteDTO
 import wcode.software.models.RequestID
 import wcode.software.models.Response
 
-object QuoteRoutes : BaseRoutes {
+class QuoteRoutes : BaseRoutes() {
 
     private val quoteController = QuoteDAO()
-    private val basePath: String = "/quotes"
+    override val basePath: String = "/quotes"
 
     override fun addRoutes(javalin: Javalin) {
         javalin.routes {

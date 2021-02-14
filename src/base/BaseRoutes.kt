@@ -2,7 +2,9 @@ package wcode.software.base
 
 import io.javalin.Javalin
 
-interface BaseRoutes {
+abstract class BaseRoutes {
 
-    fun addRoutes(javalin: Javalin)
+    abstract val basePath: String
+
+    abstract fun addRoutes(javalin: Javalin)
 }

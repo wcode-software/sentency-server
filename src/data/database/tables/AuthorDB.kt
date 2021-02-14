@@ -1,7 +1,7 @@
-package wcode.software.database.tables
+package wcode.software.data.database.tables
 
 import org.jetbrains.exposed.dao.id.UUIDTable
-import wcode.software.database.DatabaseConstants
+import wcode.software.data.database.DatabaseConstants
 
 object AuthorDB : UUIDTable(columnName = DatabaseConstants.Author.id) {
     val name = varchar(DatabaseConstants.Author.name, 100)

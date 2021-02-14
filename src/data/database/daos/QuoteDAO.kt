@@ -1,14 +1,14 @@
-package wcode.software.database.controllers
+package wcode.software.data.database.daos
 
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import wcode.software.database.base.BaseDAO
-import wcode.software.database.models.AuthorSchema
-import wcode.software.database.schema.QuoteDB
+import wcode.software.base.BaseDAO
+import wcode.software.data.database.schemas.AuthorSchema
+import wcode.software.data.database.tables.QuoteDB
 import wcode.software.dtos.QuoteDTO
-import wcode.software.models.QuoteSchema
+import wcode.software.data.database.schemas.QuoteSchema
 import wcode.software.utils.CalendarUtils
 import java.util.*
 import kotlin.collections.ArrayList

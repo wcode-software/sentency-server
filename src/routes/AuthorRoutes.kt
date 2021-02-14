@@ -9,16 +9,16 @@ import io.javalin.plugin.openapi.annotations.OpenApiRequestBody
 import io.javalin.plugin.openapi.annotations.OpenApiResponse
 import wcode.software.auth.AuthController
 import wcode.software.base.BaseRoutes
-import wcode.software.database.controllers.AuthorDAO
+import wcode.software.data.database.daos.AuthorDAO
 import wcode.software.dtos.AuthorDTO
 import wcode.software.dtos.QuoteDTO
 import wcode.software.models.RequestID
 import wcode.software.models.Response
 
-object AuthorRoutes : BaseRoutes {
+class AuthorRoutes : BaseRoutes() {
 
     private val authorController = AuthorDAO()
-    private val basePath: String = "/authors"
+    override val basePath: String = "/authors"
 
     override fun addRoutes(javalin: Javalin) {
         javalin.routes {
