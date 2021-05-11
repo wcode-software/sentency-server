@@ -6,48 +6,46 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.koin.ktor.ext.inject
-import org.wcode.database.dao.QuoteDAO
-import org.wcode.dto.QuoteDTO
+import org.wcode.database.dao.AuthorDAO
+import org.wcode.dto.AuthorDTO
 
-fun Route.quoteRouting() {
+fun Route.authorRouting() {
 
-    val quoteDao: QuoteDAO by inject()
+    val authorDAO: AuthorDAO by inject()
 
-    route("/quote") {
+    route("/author") {
         get {
-            quoteDao.getAll().onSuccess {
+            authorDAO.getAll().onSuccess {
                 call.respond(it)
             }.onFailure {
-                call.respondText("No quotes found", status = HttpStatusCode.NotFound)
+                call.respondText("No authors found", status = HttpStatusCode.NotFound)
             }
         }
         get("{id}") {
             val id = call.parameters["id"] ?: return@get call.respondText(
-                "Missing or malformed id",
-                status = HttpStatusCode.BadRequest
+                "Missing or malformed id", status = HttpStatusCode.BadRequest
             )
-            quoteDao.getById(id).onSuccess {
+            authorDAO.getById(id).onSuccess {
                 call.respond(it)
             }.onFailure {
                 call.respondText(
-                    "No quote with id $id",
+                    "No author with id $id",
                     status = HttpStatusCode.NotFound
                 )
             }
         }
         post {
-            val quote = call.receive<QuoteDTO>()
-            quoteDao.insert(quote).onSuccess {
+            val author = call.receive<AuthorDTO>()
+            authorDAO.insert(author).onSuccess {
                 call.respond(it)
             }.onFailure {
-                call.respondText("Error when adding quote", status = HttpStatusCode.NotModified)
+                call.respondText("Error when adding author", status = HttpStatusCode.NotModified)
             }
-
         }
         delete("{id}") {
             val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            quoteDao.delete(id).onSuccess {
-                call.respondText("Quote removed correctly", status = HttpStatusCode.Accepted)
+            authorDAO.delete(id).onSuccess {
+                call.respondText("Author removed correctly", status = HttpStatusCode.Accepted)
             }.onFailure {
                 call.respondText("Not Found", status = HttpStatusCode.NotFound)
             }
