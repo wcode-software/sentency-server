@@ -1,105 +1,50 @@
-val exposed_version = "0.29.1"
-val javalin_version = "3.13.0"
+val ktorVersion: String by project
+val kotlinVersion: String by project
+val logbackVersion: String by project
+val exposedVersion: String by project
+val koinVersion: String by project
 
 plugins {
-    kotlin("jvm") version "1.4.30"
-    jacoco
-    id("org.sonarqube") version "3.0"
+    application
+    kotlin("jvm") version "1.5.0"
+    kotlin("plugin.serialization") version "1.5.0"
 }
 
 group = "org.wcode"
-version = "0.2.5"
+version = "1.0.0"
+application {
+    mainClass.set("org.wcode.ApplicationKt")
+}
 
 repositories {
-    mavenLocal()
-    jcenter()
     mavenCentral()
-    maven {
-        url = uri("https://dl.bintray.com/kotlin/exposed")
-    }
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-auth:$ktorVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-locations:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+    implementation("io.ktor:ktor-server-jetty:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-    //Javalin
-    implementation("io.javalin", "javalin", javalin_version)
-    implementation("io.javalin", "javalin-openapi", javalin_version)
+    //Exposed
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 
-    // OpenAPI
-    implementation("org.slf4j", "slf4j-simple", "1.7.30")
-    implementation("io.swagger.core.v3", "swagger-core", "2.0.9")
-    implementation("org.webjars", "swagger-ui", "3.24.3")
-    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", "2.10.1")
+    //Database Connectors
+    implementation("org.xerial:sqlite-jdbc:3.34.0")
+    implementation("com.h2database:h2:1.4.200")
+    implementation("org.postgresql:postgresql:42.2.20")
 
-    // Database
-    implementation("org.jetbrains.exposed", "exposed-core", exposed_version)
-    implementation("org.jetbrains.exposed", "exposed-dao", exposed_version)
-    implementation("org.jetbrains.exposed", "exposed-jdbc", exposed_version)
-    implementation("org.jetbrains.exposed", "exposed-jodatime", exposed_version)
+    //Koin
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
-    // JWT
-    implementation("com.auth0:java-jwt:3.11.0")
-
-    //SQL Connection
-    implementation("org.xerial:sqlite-jdbc:3.30.1")
-
-    // PostgreSQL
-    implementation("org.postgresql:postgresql:42.2.2")
-
-    // Dotenv
-    implementation("io.github.cdimascio:dotenv-kotlin:6.2.1")
-
-    // Bcrypt
-    implementation("at.favre.lib:bcrypt:0.9.0")
-
-    //Tests jUnit5
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-}
-
-
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-    finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "wcode.software.ApplicationKt"
-    }
-    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
-    configurations["compileClasspath"].forEach { file: File ->
-        from(zipTree(file.absoluteFile))
-    }
-}
-
-tasks.jacocoTestReport {
-    reports {
-        xml.isEnabled = true
-        csv.isEnabled = false
-        html.isEnabled = true
-    }
-    finalizedBy(tasks.sonarqube)
-}
-
-kotlin.sourceSets["main"].kotlin.srcDirs("src")
-kotlin.sourceSets["test"].kotlin.srcDirs("test")
-
-sourceSets["main"].resources.srcDirs("resources")
-sourceSets["test"].resources.srcDirs("testresources")
-
-sonarqube {
-    properties {
-        property("sonar.projectKey", "walterjgsp_sentency-server")
-        property("sonar.core.codeCoveragePlugin", "jacoco")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.organization", "walterjgsp-github")
-        property("sonar.login", "1f9a62bc1175a7ec91a428c3899fa033167ddd05")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-        property("sonar.tests", "test")
-        property("sonar.sources", "src")
-    }
+    //Test
+    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
 }

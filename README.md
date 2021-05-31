@@ -7,13 +7,19 @@ The server will be done using Javalin, a simple web framework for Java and Kotli
 Javalin come with built-in libraries but it's mostly a "plug what you need" type of framework, because of that we had to 
 add some third party libraries to fill some gaps:
 
-* [Javalin](https://javalin.io/): a simple web framework for Java and Kotlin
+* [Ktor](https://ktor.io/): Ktor is an asynchronous framework for creating microservices, web applications, and more.
 * [Exposed](https://github.com/JetBrains/Exposed): an ORM framework for Kotlin created by JetBrains
 
 ## Docker
 
-The project is configured to be deployed using docker. To build the docker image go to the root of the project and run
-the command:
+The project is configured to be deployed using docker.
+First step is to create the distribution of the application (in this case using Gradle):
+
+```bash
+./gradlew installDist
+```
+
+To build the docker image go to the root of the project and run the command:
 
 ```bash
  docker build -t sentency-server .
