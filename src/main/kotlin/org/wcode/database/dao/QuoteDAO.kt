@@ -5,10 +5,11 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.database.core.BaseDao
 import org.wcode.database.schema.AuthorSchema
 import org.wcode.database.schema.QuoteSchema
+import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import java.util.*
 
-class QuoteDAO(private val db: Database) : BaseDao<QuoteSchema, QuoteDTO> {
+class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
 
     override fun insert(instance: QuoteDTO): Result<QuoteDTO> = transaction(db) {
         try {
@@ -63,5 +64,20 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteSchema, QuoteDTO> {
         }
     }
 
-    override fun close() {}
+    override fun update(instance: QuoteDTO): Result<QuoteDTO> = transaction(db) {
+        try {
+            val mAuthor = AuthorSchema.findById(UUID.fromString(instance.authorId))
+            val mQuote = QuoteSchema.findById(UUID.fromString(instance.id))
+            if (mAuthor != null && mQuote != null) {
+                mQuote.author = mAuthor
+                mQuote.message = instance.message
+                mQuote.timestamp = instance.timestamp
+                Result.success(mQuote.toDTO())
+            } else {
+                Result.failure(NullPointerException())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

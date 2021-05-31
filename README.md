@@ -12,8 +12,14 @@ add some third party libraries to fill some gaps:
 
 ## Docker
 
-The project is configured to be deployed using docker. To build the docker image go to the root of the project and run
-the command:
+The project is configured to be deployed using docker.
+First step is to create the distribution of the application (in this case using Gradle):
+
+```bash
+./gradlew installDist
+```
+
+To build the docker image go to the root of the project and run the command:
 
 ```bash
  docker build -t sentency-server .

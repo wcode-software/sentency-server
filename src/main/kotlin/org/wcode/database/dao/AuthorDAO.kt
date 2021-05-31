@@ -5,9 +5,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.database.core.BaseDao
 import org.wcode.database.schema.AuthorSchema
 import org.wcode.dto.AuthorDTO
+import org.wcode.dto.QuoteDTO
 import java.util.*
 
-class AuthorDAO(private val db: Database) : BaseDao<AuthorSchema, AuthorDTO> {
+class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
 
     override fun insert(instance: AuthorDTO): Result<AuthorDTO> = transaction(db) {
         try {
@@ -57,5 +58,26 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorSchema, AuthorDTO> {
         }
     }
 
-    override fun close() {}
+    override fun update(instance: AuthorDTO): Result<AuthorDTO> = transaction(db) {
+        try {
+            AuthorSchema.findById(UUID.fromString(instance.id))?.let { current ->
+                current.name = instance.name
+                current.picUrl = instance.picUrl
+                Result.success(current.toDTO())
+            } ?: Result.failure(NullPointerException())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    fun getAllAuthorQuotes(id: String): Result<List<QuoteDTO>> = transaction(db) {
+        try {
+            AuthorSchema.findById(UUID.fromString(id))?.let { current ->
+                val quotes = current.quotes.map { it.toDTO() }
+                Result.success(quotes)
+            } ?: Result.failure(NullPointerException())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

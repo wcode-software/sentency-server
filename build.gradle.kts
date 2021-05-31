@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "org.wcode"
-version = "0.0.1"
+version = "1.0.0"
 application {
     mainClass.set("org.wcode.ApplicationKt")
 }
@@ -37,8 +37,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 
     //Database Connectors
-    implementation("org.xerial:sqlite-jdbc:3.30.1")
+    implementation("org.xerial:sqlite-jdbc:3.34.0")
     implementation("com.h2database:h2:1.4.200")
+    implementation("org.postgresql:postgresql:42.2.20")
 
     //Koin
     implementation("io.insert-koin:koin-ktor:$koinVersion")
