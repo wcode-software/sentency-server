@@ -22,18 +22,37 @@ class AuthorRoutesTest {
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
+
+            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Author removed correctly", response.content)
+                }
+            }
         }
     }
 
     @Test
     fun `Add Author without ID`() {
         val author = AuthorDTO(name = "Test")
+        var authorId = ""
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
+                response.content?.let {
+                    val responseAuthor = Json.decodeFromString<AuthorDTO>(it)
+                    authorId = responseAuthor.id
+                }
+            }
+
+            handleRequest(HttpMethod.Delete, "/author/${authorId}").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Author removed correctly", response.content)
+                }
             }
         }
     }
@@ -61,10 +80,17 @@ class AuthorRoutesTest {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/author/").apply {
+            handleRequest(HttpMethod.Get, "/author/all").apply {
                 response.content?.let {
                     val responseAuthor = Json.decodeFromString<List<AuthorDTO>>(it)
                     assertEquals(responseAuthor.size, 1)
+                }
+            }
+
+            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Author removed correctly", response.content)
                 }
             }
         }
@@ -87,6 +113,13 @@ class AuthorRoutesTest {
                     assertEquals(author.id, responseAuthor.id)
                     assertEquals(author.name, responseAuthor.name)
                     assertEquals(author.picUrl, responseAuthor.picUrl)
+                }
+            }
+
+            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Author removed correctly", response.content)
                 }
             }
         }

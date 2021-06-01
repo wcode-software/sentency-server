@@ -33,6 +33,13 @@ class QuoteRoutesTest {
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
+
+            handleRequest(HttpMethod.Delete, "/quote/${quote.id}").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Quote removed correctly", response.content)
+                }
+            }
         }
     }
 
@@ -48,11 +55,23 @@ class QuoteRoutesTest {
             }
 
             val quote = QuoteDTO(message = "Test", authorId = author.id)
+            var quoteId = ""
             handleRequest(HttpMethod.Post, "/quote") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(quote.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
+                response.content?.let {
+                    val responseQuote = Json.decodeFromString<QuoteDTO>(it)
+                    quoteId = responseQuote.id
+                }
+            }
+
+            handleRequest(HttpMethod.Delete, "/quote/$quoteId").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Quote removed correctly", response.content)
+                }
             }
         }
     }
@@ -88,7 +107,7 @@ class QuoteRoutesTest {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/author/").apply {
+            handleRequest(HttpMethod.Get, "/quote/all").apply {
                 response.content?.let {
                     val responseQuote = Json.decodeFromString<List<QuoteDTO>>(it)
                     assertEquals(responseQuote.size, 1)
@@ -122,6 +141,13 @@ class QuoteRoutesTest {
                     assertEquals(responseQuote.id, quote.id)
                     assertEquals(responseQuote.message, quote.message)
                     assertEquals(responseQuote.authorId, quote.authorId)
+                }
+            }
+
+            handleRequest(HttpMethod.Delete, "/quote/${quote.id}").apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Quote removed correctly", response.content)
                 }
             }
         }
