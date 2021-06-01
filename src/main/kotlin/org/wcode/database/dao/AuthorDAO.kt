@@ -1,9 +1,11 @@
 package org.wcode.database.dao
 
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.database.core.BaseDao
 import org.wcode.database.schema.AuthorSchema
+import org.wcode.database.tables.AuthorTable
+import org.wcode.database.tables.QuoteTable
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import java.util.*
@@ -40,7 +42,7 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
             if (mAuthor != null) {
                 Result.success(mAuthor.toDTO())
             } else {
-                Result.failure(NullPointerException())
+                Result.failure(NoSuchElementException())
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -54,7 +56,7 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
                 mAuthor.delete()
                 Result.success(true)
             } else {
-                Result.failure(NullPointerException())
+                Result.failure(NoSuchElementException())
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -67,7 +69,7 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
                 current.name = instance.name
                 current.picUrl = instance.picUrl
                 Result.success(current.toDTO())
-            } ?: Result.failure(NullPointerException())
+            } ?: Result.failure(NoSuchElementException())
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -77,12 +79,29 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
         AuthorSchema.all().count().toInt()
     }
 
+    fun getAuthorWithMostQuotes(): Result<AuthorDTO> = transaction(db) {
+        try {
+            val expression = wrapAsExpression<Int>(QuoteTable.slice(QuoteTable.id.count()).select {
+                AuthorTable.id eq QuoteTable.author
+            })
+
+            val collection = AuthorSchema.all().orderBy(Pair(expression, SortOrder.DESC))
+            when {
+                collection.count() >= 2 -> Result.success(collection.drop(1).first().toDTO())
+                collection.count() > 0 -> Result.success(collection.first().toDTO())
+                else -> Result.failure(NoSuchElementException())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     fun getAllAuthorQuotes(id: String): Result<List<QuoteDTO>> = transaction(db) {
         try {
             AuthorSchema.findById(UUID.fromString(id))?.let { current ->
                 val quotes = current.quotes.map { it.toDTO() }
                 Result.success(quotes)
-            } ?: Result.failure(NullPointerException())
+            } ?: Result.failure(NoSuchElementException())
         } catch (e: Exception) {
             Result.failure(e)
         }

@@ -22,7 +22,7 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
                     this.timestamp = Calendar.getInstance().timeInMillis
                 }
                 Result.success(mQuote.toDTO())
-            } ?: Result.failure(NullPointerException())
+            } ?: Result.failure(NoSuchElementException())
 
         } catch (e: Exception) {
             Result.failure(e)
@@ -51,7 +51,7 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
             if (mQuote != null) {
                 Result.success(mQuote.toDTO())
             } else {
-                Result.failure(NullPointerException())
+                Result.failure(NoSuchElementException())
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -65,7 +65,7 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
                 mQuote.delete()
                 Result.success(true)
             } else {
-                Result.failure(NullPointerException())
+                Result.failure(NoSuchElementException())
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -82,10 +82,20 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
                 mQuote.timestamp = instance.timestamp
                 Result.success(mQuote.toDTO())
             } else {
-                Result.failure(NullPointerException())
+                Result.failure(NoSuchElementException())
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
+
+    fun getRandom(): Result<Pair<QuoteDTO,AuthorDTO>> = transaction(db) {
+        try {
+            val quote = QuoteSchema.all().toList().random()
+            Result.success(Pair(quote.toDTO(),quote.author.toDTO()))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

@@ -11,8 +11,10 @@ import org.wcode.database.dao.QuoteDAO
 import org.wcode.dto.PaginatedDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.interfaces.BaseRoute
+import org.wcode.routes.responses.RandomQuoteResponse
 
 class QuoteRoutes : BaseRoute, KoinComponent {
+
     private val quoteDao: QuoteDAO by inject()
 
     override fun setupRouting(routing: Routing) {
@@ -64,6 +66,13 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                     val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
                     quoteDao.delete(id).onSuccess {
                         call.respondText("Quote removed correctly", status = HttpStatusCode.Accepted)
+                    }.onFailure {
+                        call.respondText("Not Found", status = HttpStatusCode.NotFound)
+                    }
+                }
+                get("random") {
+                    quoteDao.getRandom().onSuccess {
+                        call.respond(RandomQuoteResponse(it.first, it.second))
                     }.onFailure {
                         call.respondText("Not Found", status = HttpStatusCode.NotFound)
                     }

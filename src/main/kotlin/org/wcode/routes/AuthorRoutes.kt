@@ -32,7 +32,7 @@ class AuthorRoutes : BaseRoute, KoinComponent {
                     val size = Integer.valueOf(query["size"] ?: "10")
                     val count = authorDAO.count()
                     authorDAO.list(page, size).onSuccess {
-                        val response = PaginatedDTO(it, page, size, call.request.path(),count)
+                        val response = PaginatedDTO(it, page, size, call.request.path(), count)
                         call.respond(response)
                     }.onFailure {
                         call.respondText("Failure when retrieving authors", status = HttpStatusCode.InternalServerError)
@@ -78,6 +78,13 @@ class AuthorRoutes : BaseRoute, KoinComponent {
                 get("{id}/quotes") {
                     val id = call.parameters["id"] ?: return@get call.respond(HttpStatusCode.BadRequest)
                     authorDAO.getAllAuthorQuotes(id).onSuccess {
+                        call.respond(it)
+                    }.onFailure {
+                        call.respondText("Author not Found", status = HttpStatusCode.NotFound)
+                    }
+                }
+                get("/top") {
+                    authorDAO.getAuthorWithMostQuotes().onSuccess {
                         call.respond(it)
                     }.onFailure {
                         call.respondText("Author not Found", status = HttpStatusCode.NotFound)
