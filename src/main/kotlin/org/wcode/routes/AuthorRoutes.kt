@@ -9,6 +9,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.wcode.database.dao.AuthorDAO
 import org.wcode.dto.AuthorDTO
+import org.wcode.dto.PaginatedDTO
 import org.wcode.interfaces.BaseRoute
 
 class AuthorRoutes : BaseRoute, KoinComponent {
@@ -18,11 +19,23 @@ class AuthorRoutes : BaseRoute, KoinComponent {
     override fun setupRouting(routing: Routing) {
         routing {
             route("/author") {
-                get {
-                    authorDAO.getAll().onSuccess {
+                get("all") {
+                    authorDAO.list(all = true).onSuccess {
                         call.respond(it)
                     }.onFailure {
-                        call.respondText("No authors found", status = HttpStatusCode.NotFound)
+                        call.respondText("Failure when retrieving authors", status = HttpStatusCode.InternalServerError)
+                    }
+                }
+                get {
+                    val query = call.request.queryParameters
+                    val page = Integer.valueOf(query["page"] ?: "1")
+                    val size = Integer.valueOf(query["size"] ?: "10")
+                    val count = authorDAO.count()
+                    authorDAO.list(page, size).onSuccess {
+                        val response = PaginatedDTO(it, page, size, call.request.path(),count)
+                        call.respond(response)
+                    }.onFailure {
+                        call.respondText("Failure when retrieving authors", status = HttpStatusCode.InternalServerError)
                     }
                 }
                 get("{id}") {

@@ -18,6 +18,9 @@ application {
 
 repositories {
     mavenCentral()
+    maven {
+        url  = uri("https://jitpack.io")
+    }
 }
 
 dependencies {
@@ -44,6 +47,9 @@ dependencies {
     //Koin
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+
+    //Swagger
+    implementation ("com.github.nielsfalk:ktor-swagger:0.7.0")
 
     //Test
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")

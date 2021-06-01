@@ -8,6 +8,7 @@ import io.ktor.routing.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.wcode.database.dao.QuoteDAO
+import org.wcode.dto.PaginatedDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.interfaces.BaseRoute
 
@@ -17,11 +18,23 @@ class QuoteRoutes : BaseRoute, KoinComponent {
     override fun setupRouting(routing: Routing) {
         routing {
             route("/quote") {
-                get {
-                    quoteDao.getAll().onSuccess {
+                get("/all") {
+                    quoteDao.list(all = true).onSuccess {
                         call.respond(it)
                     }.onFailure {
-                        call.respondText("No quotes found", status = HttpStatusCode.NotFound)
+                        call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
+                    }
+                }
+                get {
+                    val query = call.request.queryParameters
+                    val page = Integer.valueOf(query["page"] ?: "1")
+                    val size = Integer.valueOf(query["size"] ?: "10")
+                    val count = quoteDao.count()
+                    quoteDao.list(page, size).onSuccess {
+                        val response = PaginatedDTO(it, page, size, call.request.path(), count)
+                        call.respond(response)
+                    }.onFailure {
+                        call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
                     }
                 }
                 get("{id}") {

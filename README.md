@@ -28,11 +28,8 @@ To build the docker image go to the root of the project and run the command:
 After the image is build to run locally you can execute:
 
 ```bash
-docker run -p 5000:7000 sentency-server:latest 
+docker run -p 7000:7000 sentency-server:latest 
 ```
-
-Open the address **http://localhost:5000/docs** on your browser and you will see this project Swagger with
-APIs.
 
 ## Environment variables
 

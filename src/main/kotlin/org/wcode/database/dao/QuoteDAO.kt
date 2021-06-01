@@ -8,6 +8,7 @@ import org.wcode.database.schema.QuoteSchema
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import java.util.*
+import kotlin.math.max
 
 class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
 
@@ -28,10 +29,17 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
         }
     }
 
-    override fun getAll(): Result<List<QuoteDTO>> = transaction(db) {
+    override fun count(): Int = transaction(db) {
+        QuoteSchema.all().count().toInt()
+    }
+
+    override fun list(page: Int, size: Int, all: Boolean): Result<List<QuoteDTO>> = transaction(db) {
         try {
-            val mQuotes = QuoteSchema.all().toList().map { it.toDTO() }
-            Result.success(mQuotes)
+            var mQuotes = QuoteSchema.all()
+            if (!all) {
+                mQuotes = mQuotes.limit(size, (page - 1).toLong())
+            }
+            Result.success(mQuotes.toList().map { it.toDTO() })
         } catch (e: Exception) {
             Result.failure(e)
         }

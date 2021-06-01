@@ -22,10 +22,13 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
         }
     }
 
-    override fun getAll(): Result<List<AuthorDTO>> = transaction(db) {
+    override fun list(page: Int, size: Int, all: Boolean): Result<List<AuthorDTO>> = transaction(db) {
         try {
-            val mAuthors = AuthorSchema.all().toList().map { it.toDTO() }
-            Result.success(mAuthors)
+            var mAuthors = AuthorSchema.all()
+            if (!all) {
+                mAuthors = mAuthors.limit(size, offset = (page - 1).toLong())
+            }
+            Result.success(mAuthors.toList().map { it.toDTO() })
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -68,6 +71,10 @@ class AuthorDAO(private val db: Database) : BaseDao<AuthorDTO> {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override fun count(): Int = transaction(db) {
+        AuthorSchema.all().count().toInt()
     }
 
     fun getAllAuthorQuotes(id: String): Result<List<QuoteDTO>> = transaction(db) {
