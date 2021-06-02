@@ -12,6 +12,7 @@ import org.wcode.dto.PaginatedDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.interfaces.BaseRoute
 import org.wcode.routes.responses.RandomQuoteResponse
+import org.wcode.settings.EnvironmentConfig
 
 class QuoteRoutes : BaseRoute, KoinComponent {
 
@@ -20,63 +21,100 @@ class QuoteRoutes : BaseRoute, KoinComponent {
     override fun setupRouting(routing: Routing) {
         routing {
             route("/quote") {
-                get("/all") {
-                    quoteDao.list(all = true).onSuccess {
-                        call.respond(it)
-                    }.onFailure {
-                        call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
-                    }
+                header("apiKey", EnvironmentConfig.apiKey) {
+                    getAll()
+                    getPaginated()
+                    getById()
+                    getRandomQuote()
+                    deleteQuote()
+                    createQuote()
+                    updateQuote()
                 }
-                get {
-                    val query = call.request.queryParameters
-                    val page = Integer.valueOf(query["page"] ?: "1")
-                    val size = Integer.valueOf(query["size"] ?: "10")
-                    val count = quoteDao.count()
-                    quoteDao.list(page, size).onSuccess {
-                        val response = PaginatedDTO(it, page, size, call.request.path(), count)
-                        call.respond(response)
-                    }.onFailure {
-                        call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
-                    }
-                }
-                get("{id}") {
-                    val id = call.parameters["id"] ?: return@get call.respondText(
-                        "Missing or malformed id",
-                        status = HttpStatusCode.BadRequest
-                    )
-                    quoteDao.getById(id).onSuccess {
-                        call.respond(it)
-                    }.onFailure {
-                        call.respondText(
-                            "No quote with id $id",
-                            status = HttpStatusCode.NotFound
-                        )
-                    }
-                }
-                post {
-                    val quote = call.receive<QuoteDTO>()
-                    quoteDao.insert(quote).onSuccess {
-                        call.respond(it)
-                    }.onFailure {
-                        call.respondText("Error when adding quote", status = HttpStatusCode.NotModified)
-                    }
+            }
+        }
+    }
 
-                }
-                delete("{id}") {
-                    val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
-                    quoteDao.delete(id).onSuccess {
-                        call.respondText("Quote removed correctly", status = HttpStatusCode.Accepted)
-                    }.onFailure {
-                        call.respondText("Not Found", status = HttpStatusCode.NotFound)
-                    }
-                }
-                get("random") {
-                    quoteDao.getRandom().onSuccess {
-                        call.respond(RandomQuoteResponse(it.first, it.second))
-                    }.onFailure {
-                        call.respondText("Not Found", status = HttpStatusCode.NotFound)
-                    }
-                }
+    private fun Route.getAll() {
+        get("/all") {
+            quoteDao.list(all = true).onSuccess {
+                call.respond(it)
+            }.onFailure {
+                call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
+            }
+        }
+    }
+
+    private fun Route.getPaginated() {
+        get {
+            val query = call.request.queryParameters
+            val page = Integer.valueOf(query["page"] ?: "1")
+            val size = Integer.valueOf(query["size"] ?: "10")
+            val count = quoteDao.count()
+            quoteDao.list(page, size).onSuccess {
+                val response = PaginatedDTO(it, page, size, call.request.path(), count)
+                call.respond(response)
+            }.onFailure {
+                call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
+            }
+        }
+    }
+
+    private fun Route.updateQuote() {
+        put("{id}") {
+            val quote = call.receive<QuoteDTO>()
+            quoteDao.update(quote).onSuccess {
+                call.respond(it)
+            }.onFailure {
+                call.respondText("Error when updating quote", status = HttpStatusCode.NotModified)
+            }
+        }
+    }
+
+    private fun Route.getById() {
+        get("{id}") {
+            val id = call.parameters["id"] ?: return@get call.respondText(
+                "Missing or malformed id",
+                status = HttpStatusCode.BadRequest
+            )
+            quoteDao.getById(id).onSuccess {
+                call.respond(it)
+            }.onFailure {
+                call.respondText(
+                    "No quote with id $id",
+                    status = HttpStatusCode.NotFound
+                )
+            }
+        }
+    }
+
+    private fun Route.createQuote() {
+        post {
+            val quote = call.receive<QuoteDTO>()
+            quoteDao.insert(quote).onSuccess {
+                call.respond(it)
+            }.onFailure {
+                call.respondText("Error when adding quote", status = HttpStatusCode.NotModified)
+            }
+        }
+    }
+
+    private fun Route.deleteQuote() {
+        delete("{id}") {
+            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            quoteDao.delete(id).onSuccess {
+                call.respondText("Quote removed correctly", status = HttpStatusCode.Accepted)
+            }.onFailure {
+                call.respondText("Not Found", status = HttpStatusCode.NotFound)
+            }
+        }
+    }
+
+    private fun Route.getRandomQuote() {
+        get("random") {
+            quoteDao.getRandom().onSuccess {
+                call.respond(RandomQuoteResponse(it.first, it.second))
+            }.onFailure {
+                call.respondText("Not Found", status = HttpStatusCode.NotFound)
             }
         }
     }

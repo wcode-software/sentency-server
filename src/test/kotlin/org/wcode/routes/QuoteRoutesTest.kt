@@ -20,6 +20,7 @@ class QuoteRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
@@ -28,13 +29,16 @@ class QuoteRoutesTest {
 
             val quote = QuoteDTO(id = UUID.randomUUID().toString(), message = "Test", authorId = author.id)
             handleRequest(HttpMethod.Post, "/quote") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(quote.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Delete, "/quote/${quote.id}").apply {
+            handleRequest(HttpMethod.Delete, "/quote/${quote.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Quote removed correctly", response.content)
@@ -48,6 +52,7 @@ class QuoteRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
@@ -57,6 +62,7 @@ class QuoteRoutesTest {
             val quote = QuoteDTO(message = "Test", authorId = author.id)
             var quoteId = ""
             handleRequest(HttpMethod.Post, "/quote") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(quote.toJson())
             }.apply {
@@ -67,7 +73,9 @@ class QuoteRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/quote/$quoteId").apply {
+            handleRequest(HttpMethod.Delete, "/quote/$quoteId"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Quote removed correctly", response.content)
@@ -79,7 +87,9 @@ class QuoteRoutesTest {
     @Test
     fun `Get all Quotes empty list`() {
         withTestApplication({ setupTestApplication() }) {
-            handleRequest(HttpMethod.Get, "/quote/").apply {
+            handleRequest(HttpMethod.Get, "/quote/"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseQuote = Json.decodeFromString<List<QuoteDTO>>(it)
                     assertEquals(responseQuote.size, 0)
@@ -93,6 +103,7 @@ class QuoteRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
@@ -101,13 +112,16 @@ class QuoteRoutesTest {
 
             val quote = QuoteDTO(id = UUID.randomUUID().toString(), message = "Test", authorId = author.id)
             handleRequest(HttpMethod.Post, "/quote") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(quote.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/quote/all").apply {
+            handleRequest(HttpMethod.Get, "/quote/all"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseQuote = Json.decodeFromString<List<QuoteDTO>>(it)
                     assertEquals(responseQuote.size, 1)
@@ -121,6 +135,7 @@ class QuoteRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
@@ -129,13 +144,16 @@ class QuoteRoutesTest {
 
             val quote = QuoteDTO(id = UUID.randomUUID().toString(), message = "Test", authorId = author.id)
             handleRequest(HttpMethod.Post, "/quote") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(quote.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/quote/${quote.id}").apply {
+            handleRequest(HttpMethod.Get, "/quote/${quote.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseQuote = Json.decodeFromString<QuoteDTO>(it)
                     assertEquals(responseQuote.id, quote.id)
@@ -144,7 +162,9 @@ class QuoteRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/quote/${quote.id}").apply {
+            handleRequest(HttpMethod.Delete, "/quote/${quote.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Quote removed correctly", response.content)
@@ -158,6 +178,7 @@ class QuoteRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
@@ -166,13 +187,16 @@ class QuoteRoutesTest {
 
             val quote = QuoteDTO(id = UUID.randomUUID().toString(), message = "Test", authorId = author.id)
             handleRequest(HttpMethod.Post, "/quote") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(quote.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/quote/${quote.id}").apply {
+            handleRequest(HttpMethod.Get, "/quote/${quote.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseQuote = Json.decodeFromString<QuoteDTO>(it)
                     assertEquals(responseQuote.id, quote.id)
@@ -181,7 +205,9 @@ class QuoteRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/quote/${quote.id}").apply {
+            handleRequest(HttpMethod.Delete, "/quote/${quote.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Quote removed correctly", response.content)

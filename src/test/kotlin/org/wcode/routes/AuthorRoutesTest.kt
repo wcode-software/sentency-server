@@ -18,12 +18,15 @@ class AuthorRoutesTest {
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                addHeader("apiKey","APIKEY")
                 setBody(author.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+            handleRequest(HttpMethod.Delete, "/author/${author.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Author removed correctly", response.content)
@@ -39,6 +42,7 @@ class AuthorRoutesTest {
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                addHeader("apiKey","APIKEY")
                 setBody(author.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
@@ -48,7 +52,9 @@ class AuthorRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/author/${authorId}").apply {
+            handleRequest(HttpMethod.Delete, "/author/${authorId}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Author removed correctly", response.content)
@@ -60,7 +66,9 @@ class AuthorRoutesTest {
     @Test
     fun `Get all Authors empty list`() {
         withTestApplication({ setupTestApplication() }) {
-            handleRequest(HttpMethod.Get, "/author/").apply {
+            handleRequest(HttpMethod.Get, "/author/"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseAuthor = Json.decodeFromString<List<AuthorDTO>>(it)
                     assertEquals(responseAuthor.size, 0)
@@ -75,19 +83,24 @@ class AuthorRoutesTest {
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                addHeader("apiKey","APIKEY")
                 setBody(author.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/author/all").apply {
+            handleRequest(HttpMethod.Get, "/author/all"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseAuthor = Json.decodeFromString<List<AuthorDTO>>(it)
                     assertEquals(responseAuthor.size, 1)
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+            handleRequest(HttpMethod.Delete, "/author/${author.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Author removed correctly", response.content)
@@ -101,13 +114,16 @@ class AuthorRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/author/${author.id}").apply {
+            handleRequest(HttpMethod.Get, "/author/${author.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseAuthor = Json.decodeFromString<AuthorDTO>(it)
                     assertEquals(author.id, responseAuthor.id)
@@ -116,7 +132,9 @@ class AuthorRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+            handleRequest(HttpMethod.Delete, "/author/${author.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Author removed correctly", response.content)
@@ -130,13 +148,16 @@ class AuthorRoutesTest {
         val author = AuthorDTO(id = UUID.randomUUID().toString(), name = "Test")
         withTestApplication({ setupTestApplication() }) {
             handleRequest(HttpMethod.Post, "/author") {
+                addHeader("apiKey","APIKEY")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(author.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Get, "/author/${author.id}").apply {
+            handleRequest(HttpMethod.Get, "/author/${author.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     val responseAuthor = Json.decodeFromString<AuthorDTO>(it)
                     assertEquals(author.id, responseAuthor.id)
@@ -145,7 +166,9 @@ class AuthorRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/author/${author.id}").apply {
+            handleRequest(HttpMethod.Delete, "/author/${author.id}"){
+                addHeader("apiKey","APIKEY")
+            }.apply {
                 response.content?.let {
                     assertEquals(HttpStatusCode.Accepted, response.status())
                     assertEquals("Author removed correctly", response.content)

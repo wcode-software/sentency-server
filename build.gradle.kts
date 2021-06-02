@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "org.wcode"
-version = "1.0.0"
+version = "1.1.0"
 application {
     mainClass.set("org.wcode.ApplicationKt")
 }

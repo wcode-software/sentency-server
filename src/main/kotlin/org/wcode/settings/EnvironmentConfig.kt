@@ -9,10 +9,12 @@ object EnvironmentConfig {
     var databaseName: String = "sentency_db"
     var databaseUsername: String = ""
     var databasePassword: String = ""
+    var apiKey: String = "APIKEY"
 
     fun initializeConfig(applicationConfig: HoconApplicationConfig) {
         val ktorValues = applicationConfig.config("ktor")
         flavor = ktorValues.propertyOrNull("flavor")?.getString() ?: "development"
+        apiKey = ktorValues.propertyOrNull("apiKey")?.getString() ?: "APIKEY"
 
         Log.getLog().info("Settings initialized on flavor $flavor")
 
