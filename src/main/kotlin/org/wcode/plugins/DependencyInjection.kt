@@ -11,7 +11,8 @@ import org.wcode.database.connections.SQLiteConnection
 import org.wcode.database.core.BaseConnection
 import org.wcode.database.dao.AuthorDAO
 import org.wcode.database.dao.QuoteDAO
-import org.wcode.settings.EnvironmentConfig
+import org.wcode.core.EnvironmentConfig
+import org.wcode.database.dao.UserDAO
 
 fun Application.configureDependencyInjection() {
     install(Koin) {
@@ -26,6 +27,7 @@ fun Application.configureDependencyInjection() {
 val daoModule = module {
     single { QuoteDAO(get()) }
     single { AuthorDAO(get()) }
+    single { UserDAO(get()) }
 }
 
 val databaseModule = module {

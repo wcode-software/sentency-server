@@ -5,9 +5,10 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.database.tables.AuthorTable
 import org.wcode.database.tables.QuoteTable
+import org.wcode.database.tables.UserTable
 
 abstract class BaseConnection {
-    private val tables = listOf(AuthorTable, QuoteTable)
+    private val tables = listOf(AuthorTable, QuoteTable, UserTable)
 
     fun init(): Database {
         val db = connectToDB()

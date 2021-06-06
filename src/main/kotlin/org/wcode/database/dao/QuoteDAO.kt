@@ -89,10 +89,10 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
         }
     }
 
-    fun getRandom(): Result<Pair<QuoteDTO,AuthorDTO>> = transaction(db) {
+    fun getRandom(): Result<QuoteDTO> = transaction(db) {
         try {
             val quote = QuoteSchema.all().toList().random()
-            Result.success(Pair(quote.toDTO(),quote.author.toDTO()))
+            Result.success(quote.toDTO())
         } catch (e: Exception) {
             Result.failure(e)
         }

@@ -13,4 +13,9 @@ object DatabaseConstants {
         const val name = "author_name"
         const val picUrl = "author_pic_url"
     }
+
+    object User {
+        const val email = "user_email"
+        const val password = "user_password"
+    }
 }

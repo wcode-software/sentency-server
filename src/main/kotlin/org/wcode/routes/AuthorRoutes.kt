@@ -1,6 +1,7 @@
 package org.wcode.routes
 
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -11,7 +12,7 @@ import org.wcode.database.dao.AuthorDAO
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.PaginatedDTO
 import org.wcode.interfaces.BaseRoute
-import org.wcode.settings.EnvironmentConfig
+import org.wcode.core.EnvironmentConfig
 
 class AuthorRoutes : BaseRoute, KoinComponent {
 
@@ -24,11 +25,13 @@ class AuthorRoutes : BaseRoute, KoinComponent {
                     getAll()
                     getPaginated()
                     getById()
-                    createAuthor()
-                    updateAuthor()
-                    deleteAuthor()
                     getAuthorQuotes()
                     getTopAuthor()
+                    authenticate {
+                        createAuthor()
+                        updateAuthor()
+                        deleteAuthor()
+                    }
                 }
             }
         }

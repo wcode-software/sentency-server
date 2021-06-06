@@ -25,7 +25,6 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-locations:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -33,6 +32,10 @@ dependencies {
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
+    //Auth
+    implementation("io.ktor:ktor-auth:$ktorVersion")
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
 
     //Exposed
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")

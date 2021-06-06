@@ -1,22 +1,24 @@
 package org.wcode.routes
 
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.wcode.database.dao.AuthorDAO
 import org.wcode.database.dao.QuoteDAO
 import org.wcode.dto.PaginatedDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.interfaces.BaseRoute
-import org.wcode.routes.responses.RandomQuoteResponse
-import org.wcode.settings.EnvironmentConfig
+import org.wcode.core.EnvironmentConfig
 
 class QuoteRoutes : BaseRoute, KoinComponent {
 
     private val quoteDao: QuoteDAO by inject()
+    private val authorDao: AuthorDAO by inject()
 
     override fun setupRouting(routing: Routing) {
         routing {
@@ -26,9 +28,11 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                     getPaginated()
                     getById()
                     getRandomQuote()
-                    deleteQuote()
-                    createQuote()
-                    updateQuote()
+                    authenticate {
+                        deleteQuote()
+                        createQuote()
+                        updateQuote()
+                    }
                 }
             }
         }
@@ -76,8 +80,15 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            quoteDao.getById(id).onSuccess {
-                call.respond(it)
+            quoteDao.getById(id).onSuccess { quote ->
+                authorDao.getById(quote.authorId).onSuccess { author ->
+                    call.respond(quote)
+                }.onFailure {
+                    call.respondText(
+                        "No author for quote",
+                        status = HttpStatusCode.NotFound
+                    )
+                }
             }.onFailure {
                 call.respondText(
                     "No quote with id $id",
@@ -112,7 +123,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
     private fun Route.getRandomQuote() {
         get("random") {
             quoteDao.getRandom().onSuccess {
-                call.respond(RandomQuoteResponse(it.first, it.second))
+                call.respond(it)
             }.onFailure {
                 call.respondText("Not Found", status = HttpStatusCode.NotFound)
             }

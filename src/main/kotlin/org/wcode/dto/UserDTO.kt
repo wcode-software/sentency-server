@@ -7,12 +7,10 @@ import org.wcode.interfaces.BaseDTO
 import java.util.*
 
 @Serializable
-data class QuoteDTO(
+data class UserDTO(
     val id: String = UUID.randomUUID().toString(),
-    val message: String,
-    val authorId: String,
-    val timestamp: Long = Calendar.getInstance().timeInMillis,
-    val author: AuthorDTO? = null
+    val email: String,
+    val password: String
 ) : BaseDTO {
 
     fun toJson(): String {
