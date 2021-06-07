@@ -26,7 +26,7 @@ object EnvironmentConfig {
     var issuer: String = "sentency.io"
         private set
 
-    fun initializeConfig(applicationConfig: ApplicationConfig) {
+    fun initializeConfig(applicationConfig: HoconApplicationConfig) {
         flavor = applicationConfig.propertyOrNull("ktor.flavor")?.getString() ?: "development"
         apiKey = applicationConfig.propertyOrNull("ktor.apiKey")?.getString() ?: "APIKEY"
         Log.getLog().info("Settings initialized on flavor $flavor")
@@ -35,13 +35,13 @@ object EnvironmentConfig {
         initializeJWT(applicationConfig)
     }
 
-    private fun initializeDatabase(applicationConfig: ApplicationConfig) {
+    private fun initializeDatabase(applicationConfig: HoconApplicationConfig) {
         databaseName = applicationConfig.propertyOrNull("database.name")?.getString() ?: "sentency_db"
         databaseUsername = applicationConfig.propertyOrNull("database.username")?.getString() ?: ""
         databasePassword = applicationConfig.propertyOrNull("database.password")?.getString() ?: ""
     }
 
-    private fun initializeJWT(applicationConfig: ApplicationConfig) {
+    private fun initializeJWT(applicationConfig: HoconApplicationConfig) {
         secret = applicationConfig.propertyOrNull("jwt.secret")?.getString() ?: "1234567890abcdefghijklmn"
         issuer = applicationConfig.propertyOrNull("jwt.issuer")?.getString() ?: "sentency.io"
     }
