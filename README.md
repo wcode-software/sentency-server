@@ -1,10 +1,10 @@
 # Sentency Server
 
-The server will be done using Javalin, a simple web framework for Java and Kotlin.
+The server will be done using Ktor, a simple web framework for Kotlin.
 
 ## Third-Party Libraries
 
-Javalin come with built-in libraries but it's mostly a "plug what you need" type of framework, because of that we had to 
+Ktor come with built-in libraries but it's mostly a "plug what you need" type of framework, because of that we had to 
 add some third party libraries to fill some gaps:
 
 * [Ktor](https://ktor.io/): Ktor is an asynchronous framework for creating microservices, web applications, and more.
