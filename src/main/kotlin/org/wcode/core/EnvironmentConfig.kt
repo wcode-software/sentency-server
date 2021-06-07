@@ -7,6 +7,7 @@ object EnvironmentConfig {
 
     var flavor: String = "development"
         private set
+
     var databaseName: String = "sentency_db"
         private set
 
@@ -20,6 +21,9 @@ object EnvironmentConfig {
         private set
 
     var secret: String = "JWT_SECRET"
+        private set
+
+    var issuer: String = "sentency.io"
         private set
 
     fun initializeConfig(applicationConfig: ApplicationConfig) {
@@ -39,5 +43,6 @@ object EnvironmentConfig {
 
     private fun initializeJWT(applicationConfig: ApplicationConfig) {
         secret = applicationConfig.propertyOrNull("jwt.secret")?.getString() ?: "1234567890abcdefghijklmn"
+        issuer = applicationConfig.propertyOrNull("jwt.issuer")?.getString() ?: "sentency.io"
     }
 }

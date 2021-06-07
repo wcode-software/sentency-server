@@ -28,6 +28,7 @@ class UserRoutes : BaseRoute, KoinComponent {
                         createUser()
                         getPaginated()
                         getAll()
+                        deleteUser()
                     }
                     login()
                 }
@@ -78,6 +79,17 @@ class UserRoutes : BaseRoute, KoinComponent {
                 call.respond(response)
             }.onFailure {
                 call.respondText("Failure when retrieving users", status = HttpStatusCode.InternalServerError)
+            }
+        }
+    }
+
+    private fun Route.deleteUser() {
+        delete("{id}") {
+            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            userDAO.delete(id).onSuccess {
+                call.respondText("User removed correctly", status = HttpStatusCode.Accepted)
+            }.onFailure {
+                call.respondText("User not Found", status = HttpStatusCode.NotFound)
             }
         }
     }
