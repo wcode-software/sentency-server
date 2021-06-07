@@ -33,16 +33,14 @@ docker run -p 7000:7000 sentency-server:latest
 
 ## Environment variables
 
-The project use .env libraries to load environment variables. To change any parameter change the value inside 
-the file **development.env** that's inside the resource folder.
+The project load environment variables to fill some important parameters on the server.
+They can be defined when running the docker image, on the docker-compose or in the environment
+itself.
 
-If it's necessary to create a new .env file (production file for example), the file should comply with the following
-pattern:
-
-```bash
-ENVIRONMENT = development
-PREFIX = server
-```
-
-Inside the **Application.kt** the *loadEnvVariables()* function need to be update to match the new file 
-name and folder parameters
+* FLAVOR: If it is production or development. Production flavor will try to use Postgre
+* API_KEY: Value that will be used to wrap all calls.
+* DB_NAME: When in production the name of the database
+* DB_USERNAME: When in production the username of the user that connects to database
+* DB_PASSWORD: When in production the password to connect to database
+* JWT_SECRET: Secret used to generate JWT tokens
+* JWT_ISSUER: Issuer of the JWT tokens
