@@ -20,5 +20,5 @@ jobs:
         with:
           push: true
           tags: |
-            docker.pkg.github.com/${{ github.repository }}/sentency-server-image:${{ github.sha }}
-            docker.pkg.github.com/${{ github.repository }}/sentency-server-image:${{ github.ref }}
+            docker.pkg.github.com/${{ github.repository }}/sentency-server:${{ github.sha }}
+            docker.pkg.github.com/${{ github.repository }}/sentency-server:${{ github.event.release.tag_name }}
