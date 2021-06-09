@@ -1,12 +1,16 @@
 package org.wcode.database.dao
 
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.database.core.BaseDao
 import org.wcode.database.schema.AuthorSchema
 import org.wcode.database.schema.QuoteSchema
+import org.wcode.database.tables.QuoteTable
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
+import org.wcode.utils.CalendarUtils
 import java.util.*
 import kotlin.math.max
 
@@ -93,6 +97,18 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
         try {
             val quote = QuoteSchema.all().toList().random()
             Result.success(quote.toDTO())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    fun getMonthCount(): Result<Int> = transaction(db) {
+        try {
+            val (start, end) = CalendarUtils.getMonthStartEnd()
+            val count = QuoteTable.select {
+                (QuoteTable.timestap greaterEq start) and (QuoteTable.timestap lessEq end)
+            }.count().toInt()
+            Result.success(count)
         } catch (e: Exception) {
             Result.failure(e)
         }

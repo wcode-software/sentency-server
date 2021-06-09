@@ -26,11 +26,12 @@ class AuthorRoutes : BaseRoute, KoinComponent {
                     getPaginated()
                     getById()
                     getAuthorQuotes()
-                    getTopAuthor()
                     authenticate {
                         createAuthor()
                         updateAuthor()
                         deleteAuthor()
+                        getTopAuthor()
+                        countAuthors()
                     }
                 }
             }
@@ -92,6 +93,13 @@ class AuthorRoutes : BaseRoute, KoinComponent {
             }.onFailure {
                 call.respondText("Error when adding author", status = HttpStatusCode.NotModified)
             }
+        }
+    }
+
+    private fun Route.countAuthors() {
+        get("count") {
+            val count = authorDAO.count()
+            call.respond(mapOf("count" to count))
         }
     }
 

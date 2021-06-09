@@ -32,6 +32,8 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                         deleteQuote()
                         createQuote()
                         updateQuote()
+                        countQuotes()
+                        montQuoteCount()
                     }
                 }
             }
@@ -60,6 +62,13 @@ class QuoteRoutes : BaseRoute, KoinComponent {
             }.onFailure {
                 call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
             }
+        }
+    }
+
+    private fun Route.countQuotes() {
+        get("count") {
+            val count = quoteDao.count()
+            call.respond(mapOf("count" to count))
         }
     }
 
@@ -126,6 +135,16 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                 call.respond(it)
             }.onFailure {
                 call.respondText("Not Found", status = HttpStatusCode.NotFound)
+            }
+        }
+    }
+
+    private fun Route.montQuoteCount() {
+        get("month/count") {
+            quoteDao.getMonthCount().onSuccess {
+                call.respond(mapOf("count" to it))
+            }.onFailure {
+                call.respondText("Error in counting quotes of month", status = HttpStatusCode.InternalServerError)
             }
         }
     }
