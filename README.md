@@ -1,6 +1,10 @@
-# Sentency Server
+<div align="center">
+    <h1 align="center">Sentency Server</h1>
+    <h5>Project Sentency</h5>
+    <img  width="80" height="80" src="./icon.svg">
+</div>
 
-The server will be done using Ktor, a simple web framework for Kotlin.
+Repository to hold Sentency server code. The server is be done using Ktor, a simple web framework for Kotlin.
 
 ## Third-Party Libraries
 
