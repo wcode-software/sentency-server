@@ -73,7 +73,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
     }
 
     private fun Route.updateQuote() {
-        put("{id}") {
+        put {
             val quote = call.receive<QuoteDTO>()
             quoteDao.update(quote).onSuccess {
                 call.respond(it)
