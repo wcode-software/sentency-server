@@ -12,6 +12,7 @@ plugins {
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.serialization") version "1.5.0"
     jacoco
+    id("org.sonarqube") version "3.2.0"
 }
 
 group = "org.wcode"
@@ -23,7 +24,7 @@ application {
 repositories {
     mavenCentral()
     maven {
-        url  = uri("https://jitpack.io")
+        url = uri("https://jitpack.io")
     }
 }
 
@@ -56,7 +57,7 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
     //Swagger
-    implementation ("com.github.nielsfalk:ktor-swagger:0.7.0")
+    implementation("com.github.nielsfalk:ktor-swagger:0.7.0")
 
     //Test
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
@@ -83,5 +84,28 @@ tasks.test {
     testLogging {
         exceptionFormat = FULL
         events("passed", "failed", "skipped")
+    }
+}
+
+sonarqube {
+    properties {
+
+        val sonarToken = System.getenv().get("SONAR_TOKEN")
+        property("sonar.sources", "src/main/kotlin")
+        property("sonar.binaries", "build/intermediates/classes/debug")
+        property("sonar.tests", "src/test/kotlin")
+        property("sonar.jacoco.reportsPaths", "build/jacoco/test.exec")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.java.coveragePlugin", "jacoco")
+        property("sonar.junit.reportsPath", "build/test-results/test")
+
+        property("sonar.coverage.exclusions", "")
+
+        property("sonar.projectKey", "walterjgsp_sentency-server")
+        property("sonar.projectVersion", "$version")
+        property("sonar.organization", "walterjgsp-github")
+        property("sonar.projectName", "Sentency Server")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.login", "$sonarToken")
     }
 }

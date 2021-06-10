@@ -38,6 +38,9 @@ jobs:
       - name: Test with gradle
         run: ./gradlew test
 
+      - name: Sonar scan
+        run: ./gradlew sonarqube
+
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
         # Restoring these files from a GitHub Actions cache might cause problems for future builds.
@@ -45,13 +48,3 @@ jobs:
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
 
-  sonar:
-    runs-on: ubuntu-latest
-
-    needs: test
-    steps:
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
