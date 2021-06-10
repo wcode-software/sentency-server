@@ -15,7 +15,7 @@ jobs:
 
   test:
     env:
-      SONAR_TOKEN: {{secrets.SONAR_TOKEN}}
+      SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
