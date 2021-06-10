@@ -90,7 +90,8 @@ tasks.test {
 sonarqube {
     properties {
 
-        val sonarToken = System.getenv().get("SONAR_TOKEN")
+        val sonarToken = System.getenv()["SONAR_TOKEN"]
+
         property("sonar.sources", "src/main/kotlin")
         property("sonar.binaries", "build/intermediates/classes/debug")
         property("sonar.tests", "src/test/kotlin")

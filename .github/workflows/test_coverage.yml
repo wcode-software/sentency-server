@@ -14,6 +14,8 @@ on:
 jobs:
 
   test:
+    env:
+      SONAR_TOKEN: {{secrets.SONAR_TOKEN}}
     runs-on: ubuntu-latest
 
     steps:
