@@ -131,7 +131,7 @@ class AuthorRoutes : BaseRoute, KoinComponent {
             authorDAO.getAllAuthorQuotes(id).onSuccess {
                 call.respond(it)
             }.onFailure {
-                call.respondText("Author not Found", status = HttpStatusCode.NotFound)
+                call.respondText("Error when retrieving author quotes", status = HttpStatusCode.NotFound)
             }
         }
     }
@@ -141,7 +141,7 @@ class AuthorRoutes : BaseRoute, KoinComponent {
             authorDAO.getAuthorWithMostQuotes().onSuccess {
                 call.respond(it)
             }.onFailure {
-                call.respondText("Author not Found", status = HttpStatusCode.NotFound)
+                call.respondText("Author with most quotes not Found", status = HttpStatusCode.NotFound)
             }
         }
     }

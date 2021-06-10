@@ -16,6 +16,6 @@ fun Application.configureHTTP() {
         header("apiKey")
         allowCredentials = true
         allowNonSimpleContentTypes = true
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
+        anyHost()
     }
 }
