@@ -1,13 +1,17 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.*
+
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
 val exposedVersion: String by project
 val koinVersion: String by project
+val jacocoVersion: String by project
 
 plugins {
     application
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.serialization") version "1.5.0"
+    jacoco
 }
 
 group = "org.wcode"
@@ -56,4 +60,28 @@ dependencies {
 
     //Test
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        csv.isEnabled = true
+        html.isEnabled = true
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+//    useJUnitPlatform {
+//        includeEngines("junit-jupiter", "spek2")
+//    }
+
+    testLogging {
+        exceptionFormat = FULL
+        events("passed", "failed", "skipped")
+    }
 }
