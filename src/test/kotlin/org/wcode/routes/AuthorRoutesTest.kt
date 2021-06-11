@@ -66,7 +66,7 @@ class AuthorRoutesTest {
     @Test
     fun `Get all Authors empty list`() {
         withTestApplication({ setupTestApplication() }) {
-            handleRequest(HttpMethod.Get, "/author/"){
+            handleRequest(HttpMethod.Get, "/author/all"){
                 addHeader("apiKey","APIKEY")
             }.apply {
                 response.content?.let {
@@ -175,5 +175,10 @@ class AuthorRoutesTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun `Get paginated authors list`(){
+
     }
 }

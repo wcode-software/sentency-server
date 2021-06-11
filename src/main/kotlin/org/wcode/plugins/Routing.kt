@@ -14,10 +14,6 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World!")
         }
-        post("/anything"){
-            val received = call.receiveText()
-            print(received)
-        }
         routes.forEach { route ->
             route.setupRouting(this)
         }

@@ -100,7 +100,7 @@ sonarqube {
         property("sonar.java.coveragePlugin", "jacoco")
         property("sonar.junit.reportsPath", "build/test-results/test")
 
-        property("sonar.coverage.exclusions", "**/*Application.kt,**/plugins/**.kt")
+        property("sonar.coverage.exclusions", "**/*Application.kt,**/plugins/**.kt,**/database/connections/**.kt,**/database/core/**.kt")
 
         property("sonar.projectKey", "walterjgsp_sentency-server")
         property("sonar.projectVersion", "$version")
