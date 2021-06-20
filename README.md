@@ -48,3 +48,14 @@ itself.
 * DB_PASSWORD: When in production the password to connect to database
 * JWT_SECRET: Secret used to generate JWT tokens
 * JWT_ISSUER: Issuer of the JWT tokens
+
+## Test coverage
+
+To generate test coverage report Jacoco was configured as an extension of the test task. Execute
+the command:
+
+```bash
+./gradlew test
+```
+
+to execute tests and generate code coverage reports.

@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "org.wcode"
-version = "1.2.1"
+version = "1.3.0"
 application {
     mainClass.set("org.wcode.ApplicationKt")
 }
@@ -65,6 +65,7 @@ dependencies {
 
 jacoco {
     toolVersion = jacocoVersion
+
 }
 
 tasks.jacocoTestReport {
@@ -77,9 +78,6 @@ tasks.jacocoTestReport {
 
 tasks.test {
     finalizedBy(tasks.jacocoTestReport)
-//    useJUnitPlatform {
-//        includeEngines("junit-jupiter", "spek2")
-//    }
 
     testLogging {
         exceptionFormat = FULL
@@ -91,6 +89,12 @@ sonarqube {
     properties {
 
         val sonarToken = System.getenv()["SONAR_TOKEN"]
+        val excludeFiles = listOf(
+            "**/*Application.kt",
+            "**/plugins/**.kt",
+            "**/database/connections/**.kt",
+            "**/database/core/**.kt"
+        )
 
         property("sonar.sources", "src/main/kotlin")
         property("sonar.binaries", "build/intermediates/classes/debug")
@@ -100,7 +104,7 @@ sonarqube {
         property("sonar.java.coveragePlugin", "jacoco")
         property("sonar.junit.reportsPath", "build/test-results/test")
 
-        property("sonar.coverage.exclusions", "**/*Application.kt,**/plugins/**.kt,**/database/connections/**.kt,**/database/core/**.kt")
+        property("sonar.coverage.exclusions", excludeFiles.joinToString())
 
         property("sonar.projectKey", "walterjgsp_sentency-server")
         property("sonar.projectVersion", "$version")

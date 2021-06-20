@@ -8,6 +8,12 @@ object DatabaseConstants {
         const val type = "quote_type"
     }
 
+    object QuoteLocalization {
+        const val quoteId = "localization_quote_id"
+        const val code = "localization_quote_code"
+        const val message = "localization_quote_message"
+    }
+
     object Author {
         const val id = "author_id"
         const val name = "author_name"

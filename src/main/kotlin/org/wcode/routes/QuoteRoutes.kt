@@ -1,5 +1,6 @@
 package org.wcode.routes
 
+import de.nielsfalk.ktor.swagger.version.shared.ParameterInputType
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -90,7 +91,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                 status = HttpStatusCode.BadRequest
             )
             quoteDao.getById(id).onSuccess { quote ->
-                authorDao.getById(quote.authorId).onSuccess { author ->
+                authorDao.getById(quote.authorId).onSuccess { _ ->
                     call.respond(quote)
                 }.onFailure {
                     call.respondText(
@@ -131,7 +132,9 @@ class QuoteRoutes : BaseRoute, KoinComponent {
 
     private fun Route.getRandomQuote() {
         get("random") {
-            quoteDao.getRandom().onSuccess {
+            val query = call.request.queryParameters
+            val languageCode = query["language"] ?: "None"
+            quoteDao.getRandom(languageCode).onSuccess {
                 call.respond(it)
             }.onFailure {
                 call.respondText("Not Found", status = HttpStatusCode.NotFound)
