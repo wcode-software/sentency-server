@@ -23,6 +23,7 @@ class QuoteSchema(id: EntityID<UUID>) : BaseSchema<QuoteDTO>(id) {
         messages = this.messages.map { it.toDTO() },
         authorId = this.author.id.toString(),
         timestamp = this.timestamp,
-        author = this.author.toDTO()
+        author = this.author.toDTO(),
+        type = this.type
     )
 }

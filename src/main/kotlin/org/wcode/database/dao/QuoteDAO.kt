@@ -25,6 +25,7 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
                 val mQuote = QuoteSchema.new(UUID.fromString(instance.id)) {
                     this.author = mAuthor
                     this.timestamp = Calendar.getInstance().timeInMillis
+                    this.type = instance.type
                 }
                 instance.messages.forEach { message ->
                     QuoteLocalizationSchema.new(UUID.fromString(message.id)) {
@@ -90,12 +91,15 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
             if (mAuthor != null && mQuote != null) {
                 mQuote.author = mAuthor
                 instance.messages.forEach { message ->
-                    QuoteLocalizationSchema.new(UUID.fromString(message.id)) {
-                        this.code = message.code
-                        this.message = message.message
-                    }
+                    val mMessage = QuoteLocalizationSchema.findById(UUID.fromString(message.id))
+                        ?: QuoteLocalizationSchema.new(
+                            UUID.fromString(message.id)
+                        ) {}
+                    mMessage.code = message.code
+                    mMessage.message = message.message
                 }
                 mQuote.timestamp = instance.timestamp
+                mQuote.type = instance.type
                 Result.success(mQuote.toDTO())
             } else {
                 Result.failure(NoSuchElementException())

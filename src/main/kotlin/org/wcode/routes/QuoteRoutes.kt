@@ -91,14 +91,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                 status = HttpStatusCode.BadRequest
             )
             quoteDao.getById(id).onSuccess { quote ->
-                authorDao.getById(quote.authorId).onSuccess { _ ->
-                    call.respond(quote)
-                }.onFailure {
-                    call.respondText(
-                        "No author for quote",
-                        status = HttpStatusCode.NotFound
-                    )
-                }
+                call.respond(quote)
             }.onFailure {
                 call.respondText(
                     "No quote with id $id",
