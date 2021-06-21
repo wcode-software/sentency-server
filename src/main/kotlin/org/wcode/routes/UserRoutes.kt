@@ -63,7 +63,7 @@ class UserRoutes : BaseRoute, KoinComponent {
             userDAO.list(all = true).onSuccess {
                 call.respond(it)
             }.onFailure {
-                call.respondText("Failure when retrieving quotes", status = HttpStatusCode.InternalServerError)
+                call.respondText("Failure when retrieving users", status = HttpStatusCode.InternalServerError)
             }
         }
     }

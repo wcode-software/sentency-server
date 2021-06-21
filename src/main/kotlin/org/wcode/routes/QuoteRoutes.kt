@@ -34,7 +34,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                         createQuote()
                         updateQuote()
                         countQuotes()
-                        montQuoteCount()
+                        monthQuoteCount()
                     }
                 }
             }
@@ -142,7 +142,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
         }
     }
 
-    private fun Route.montQuoteCount() {
+    private fun Route.monthQuoteCount() {
         get("month/count") {
             quoteDao.getMonthCount().onSuccess {
                 call.respond(mapOf("count" to it))

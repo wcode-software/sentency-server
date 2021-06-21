@@ -17,13 +17,14 @@ class QuoteLocalizationDAO(private val db: Database) : BaseDao<QuoteLocalization
             try {
                 val mQuote = QuoteSchema.findById(UUID.fromString(instance.quoteId))
                 mQuote?.let {
-                    val localization = it.messages.find { it.code == instance.code }
+                    val localization = it.messages.find { message -> message.code == instance.code }
                     if (localization != null) {
                         Result.failure(RuntimeException())
                     } else {
                         val mQuotesLocalization = QuoteLocalizationSchema.new(UUID.fromString(instance.id)) {
                             this.code = instance.code
                             this.message = instance.message
+                            this.quote = mQuote
                         }
                         Result.success(mQuotesLocalization.toDTO())
                     }

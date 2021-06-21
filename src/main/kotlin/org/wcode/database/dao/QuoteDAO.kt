@@ -35,7 +35,6 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
                 }
                 Result.success(mQuote.toDTO())
             } ?: Result.failure(NoSuchElementException())
-
         } catch (e: Exception) {
             Result.failure(e)
         }
