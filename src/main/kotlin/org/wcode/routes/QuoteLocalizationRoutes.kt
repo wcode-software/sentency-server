@@ -34,7 +34,7 @@ class QuoteLocalizationRoutes : BaseRoute, KoinComponent {
     }
 
     private fun Route.getAll() {
-        get("{quote_id") {
+        get("{quote_id}") {
             val id = call.parameters["quote_id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest

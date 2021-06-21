@@ -96,8 +96,8 @@ class QuoteLocalizationDAO(private val db: Database) : BaseDao<QuoteLocalization
         return QuoteLocalizationSchema.count().toInt()
     }
 
-    fun countQuoteLocalizations(quoteId: String): Int {
-        return QuoteSchema.findById(UUID.fromString(quoteId))?.messages?.count()?.toInt() ?: -1
+    fun countQuoteLocalizations(quoteId: String): Int = transaction(db) {
+        QuoteSchema.findById(UUID.fromString(quoteId))?.messages?.count()?.toInt() ?: -1
     }
 
     fun getAllQuoteLocalizations(quoteId: String): Result<List<QuoteLocalizationDTO>> = transaction(db) {
