@@ -24,6 +24,10 @@ class UserRoutesTest {
                 setBody(userDTO.toJson())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
+                response.content?.let {
+                    val response = Json.decodeFromString<UserDTO>(it)
+                    assertEquals("***********", response.password)
+                }
             }
 
             handleRequest(HttpMethod.Delete, "/user/${userDTO.id}") {

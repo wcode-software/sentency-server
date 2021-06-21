@@ -10,10 +10,14 @@ import java.util.*
 data class UserDTO(
     val id: String = UUID.randomUUID().toString(),
     val email: String,
-    val password: String
+    var password: String
 ) : BaseDTO {
 
     fun toJson(): String {
         return Json.encodeToString(this)
+    }
+
+    fun hidePassword() {
+        this.password = "***********"
     }
 }

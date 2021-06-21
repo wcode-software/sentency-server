@@ -17,7 +17,7 @@ class UserSchema(id: EntityID<UUID>) : BaseSchema<UserDTO>(id) {
     override fun toDTO(): UserDTO = UserDTO(
         id = this.id.toString(),
         email = this.email,
-        password = "************"
+        password = this.password
     )
 
 }

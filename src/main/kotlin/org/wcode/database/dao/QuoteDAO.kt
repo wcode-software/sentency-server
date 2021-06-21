@@ -24,7 +24,7 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
             mAuthor?.let {
                 val mQuote = QuoteSchema.new(UUID.fromString(instance.id)) {
                     this.author = mAuthor
-                    this.timestamp = Calendar.getInstance().timeInMillis
+                    this.timestamp = instance.timestamp
                     this.type = instance.type
                 }
                 instance.messages.forEach { message ->

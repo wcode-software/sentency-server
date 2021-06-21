@@ -40,6 +40,7 @@ class UserRoutes : BaseRoute, KoinComponent {
         post {
             val user = call.receive<UserDTO>()
             userDAO.insert(user).onSuccess {
+                it.hidePassword()
                 call.respond(it)
             }.onFailure {
                 call.respondText("Error when adding user", status = HttpStatusCode.NotModified)
@@ -61,6 +62,7 @@ class UserRoutes : BaseRoute, KoinComponent {
     private fun Route.getAll() {
         get("/all") {
             userDAO.list(all = true).onSuccess {
+                it.forEach { it.hidePassword() }
                 call.respond(it)
             }.onFailure {
                 call.respondText("Failure when retrieving users", status = HttpStatusCode.InternalServerError)
@@ -75,6 +77,7 @@ class UserRoutes : BaseRoute, KoinComponent {
             val size = Integer.valueOf(query["size"] ?: "10")
             val count = userDAO.count()
             userDAO.list(page, size).onSuccess {
+                it.forEach { it.hidePassword() }
                 val response = PaginatedDTO(it, page, size, call.request.path(), count)
                 call.respond(response)
             }.onFailure {

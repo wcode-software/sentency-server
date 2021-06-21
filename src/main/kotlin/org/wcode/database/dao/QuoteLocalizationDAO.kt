@@ -92,8 +92,8 @@ class QuoteLocalizationDAO(private val db: Database) : BaseDao<QuoteLocalization
         }
     }
 
-    override fun count(): Int {
-        return QuoteLocalizationSchema.count().toInt()
+    override fun count(): Int = transaction(db) {
+        QuoteLocalizationSchema.count().toInt()
     }
 
     fun countQuoteLocalizations(quoteId: String): Int = transaction(db) {

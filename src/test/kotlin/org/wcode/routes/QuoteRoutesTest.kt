@@ -408,4 +408,87 @@ class QuoteRoutesTest {
             }
         }
     }
+
+
+    @Test
+    fun `Get month quote count`() {
+        val id1 = UUID.randomUUID().toString()
+        val id2 = UUID.randomUUID().toString()
+        val id3 = UUID.randomUUID().toString()
+        val oldQuoteId = UUID.randomUUID().toString()
+        val quotes = listOf(
+            QuoteDTO(
+                id = id1,
+                messages = listOf(QuoteLocalizationDTO(code = "test", message = "Test", quoteId = id1)),
+                authorId = author.id
+            ),
+            QuoteDTO(
+                id = id2,
+                messages = listOf(QuoteLocalizationDTO(code = "test", message = "Test", quoteId = id2)),
+                authorId = author.id
+            ),
+            QuoteDTO(
+                id = id3,
+                messages = listOf(QuoteLocalizationDTO(code = "test", message = "Test", quoteId = id3)),
+                authorId = author.id
+            ),
+        )
+        val date = Calendar.getInstance()
+        date.add(Calendar.MONTH, -2)
+        val oldQuote = QuoteDTO(
+            id = oldQuoteId,
+            authorId = author.id,
+            messages = listOf(QuoteLocalizationDTO(code = "test", message = "Test", quoteId = oldQuoteId)),
+            timestamp = date.timeInMillis
+        )
+        withTestApplication({ setupTestApplication() }) {
+            quotes.forEach { quote ->
+                handleRequest(HttpMethod.Post, "/quote") {
+                    addHeader("apiKey", "APIKEY")
+                    addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    setBody(quote.toJson())
+                }.apply {
+                    assertEquals(HttpStatusCode.OK, response.status())
+                }
+            }
+
+            handleRequest(HttpMethod.Post, "/quote") {
+                addHeader("apiKey", "APIKEY")
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                setBody(oldQuote.toJson())
+            }.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+            }
+
+            handleRequest(HttpMethod.Get, "/quote/month/count") {
+                addHeader("apiKey", "APIKEY")
+            }.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+                response.content?.let {
+                    assertEquals("{\"count\":3}", response.content)
+                }
+            }
+
+            quotes.forEach { quote ->
+                handleRequest(HttpMethod.Delete, "/quote/${quote.id}") {
+                    addHeader("apiKey", "APIKEY")
+                }.apply {
+                    response.content?.let {
+                        assertEquals(HttpStatusCode.Accepted, response.status())
+                        assertEquals("Quote removed correctly", response.content)
+                    }
+                }
+            }
+
+            handleRequest(HttpMethod.Delete, "/quote/${oldQuote.id}") {
+                addHeader("apiKey", "APIKEY")
+            }.apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.Accepted, response.status())
+                    assertEquals("Quote removed correctly", response.content)
+                }
+            }
+        }
+    }
+
 }
