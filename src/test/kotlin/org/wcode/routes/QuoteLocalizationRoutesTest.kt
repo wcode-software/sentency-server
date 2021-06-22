@@ -192,4 +192,17 @@ class QuoteLocalizationRoutesTest {
             }
         }
     }
+
+    @Test
+    fun `Delete Quote localization that doesn't exist`(){
+        withTestApplication({ setupTestApplication() }) {
+            handleRequest(HttpMethod.Delete, "/language/Test") {
+                addHeader("apiKey", "APIKEY")
+            }.apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.NotFound, response.status())
+                }
+            }
+        }
+    }
 }

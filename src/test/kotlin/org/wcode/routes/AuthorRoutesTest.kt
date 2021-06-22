@@ -236,6 +236,19 @@ class AuthorRoutesTest {
     }
 
     @Test
+    fun `Delete Author that doesn't exist`(){
+        withTestApplication({ setupTestApplication() }) {
+            handleRequest(HttpMethod.Delete, "/author/Test") {
+                addHeader("apiKey", "APIKEY")
+            }.apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.NotFound, response.status())
+                }
+            }
+        }
+    }
+
+    @Test
     fun `Count authors`() {
         val authors = listOf(AuthorDTO(name = "Test"), AuthorDTO(name = "Test 2"), AuthorDTO(name = "Test 3"))
         withTestApplication({ setupTestApplication() }) {

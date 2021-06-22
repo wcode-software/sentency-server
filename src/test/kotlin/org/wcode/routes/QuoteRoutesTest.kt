@@ -214,6 +214,19 @@ class QuoteRoutesTest {
     }
 
     @Test
+    fun `Delete Quote that doesn't exist`(){
+        withTestApplication({ setupTestApplication() }) {
+            handleRequest(HttpMethod.Delete, "/quote/Test") {
+                addHeader("apiKey", "APIKEY")
+            }.apply {
+                response.content?.let {
+                    assertEquals(HttpStatusCode.NotFound, response.status())
+                }
+            }
+        }
+    }
+
+    @Test
     fun `Count quotes test`() {
         val id1 = UUID.randomUUID().toString()
         val id2 = UUID.randomUUID().toString()
