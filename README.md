@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=walterjgsp_sentency-server&metric=alert_status)](https://sonarcloud.io/dashboard?id=walterjgsp_sentency-server)
+
 <div align="center">
     <h1 align="center">Sentency Server</h1>
     <h5>Project Sentency</h5>

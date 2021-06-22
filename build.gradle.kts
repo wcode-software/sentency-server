@@ -93,7 +93,8 @@ sonarqube {
             "**/*Application.kt",
             "**/plugins/**.kt",
             "**/database/connections/**.kt",
-            "**/database/core/**.kt"
+            "**/database/core/**.kt",
+            "**/core/**.kt"
         )
 
         property("sonar.sources", "src/main/kotlin")
