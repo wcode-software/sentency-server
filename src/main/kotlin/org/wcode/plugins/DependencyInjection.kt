@@ -12,6 +12,7 @@ import org.wcode.database.core.BaseConnection
 import org.wcode.database.dao.AuthorDAO
 import org.wcode.database.dao.QuoteDAO
 import org.wcode.core.EnvironmentConfig
+import org.wcode.database.dao.QuoteLocalizationDAO
 import org.wcode.database.dao.UserDAO
 
 fun Application.configureDependencyInjection() {
@@ -28,6 +29,7 @@ val daoModule = module {
     single { QuoteDAO(get()) }
     single { AuthorDAO(get()) }
     single { UserDAO(get()) }
+    single { QuoteLocalizationDAO(get()) }
 }
 
 val databaseModule = module {

@@ -1,5 +1,6 @@
 package org.wcode.routes
 
+import de.nielsfalk.ktor.swagger.version.shared.ParameterInputType
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -33,7 +34,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                         createQuote()
                         updateQuote()
                         countQuotes()
-                        montQuoteCount()
+                        monthQuoteCount()
                     }
                 }
             }
@@ -90,14 +91,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
                 status = HttpStatusCode.BadRequest
             )
             quoteDao.getById(id).onSuccess { quote ->
-                authorDao.getById(quote.authorId).onSuccess { author ->
-                    call.respond(quote)
-                }.onFailure {
-                    call.respondText(
-                        "No author for quote",
-                        status = HttpStatusCode.NotFound
-                    )
-                }
+                call.respond(quote)
             }.onFailure {
                 call.respondText(
                     "No quote with id $id",
@@ -131,7 +125,9 @@ class QuoteRoutes : BaseRoute, KoinComponent {
 
     private fun Route.getRandomQuote() {
         get("random") {
-            quoteDao.getRandom().onSuccess {
+            val query = call.request.queryParameters
+            val languageCode = query["language"] ?: "None"
+            quoteDao.getRandom(languageCode).onSuccess {
                 call.respond(it)
             }.onFailure {
                 call.respondText("Not Found", status = HttpStatusCode.NotFound)
@@ -139,7 +135,7 @@ class QuoteRoutes : BaseRoute, KoinComponent {
         }
     }
 
-    private fun Route.montQuoteCount() {
+    private fun Route.monthQuoteCount() {
         get("month/count") {
             quoteDao.getMonthCount().onSuccess {
                 call.respond(mapOf("count" to it))

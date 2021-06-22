@@ -20,7 +20,7 @@ object EnvironmentConfig {
     var apiKey: String = "APIKEY"
         private set
 
-    var secret: String = "JWT_SECRET"
+    var secret: String = "1234567890abcdefghijklmn"
         private set
 
     var issuer: String = "sentency.io"

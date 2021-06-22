@@ -6,7 +6,9 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.database.core.BaseDao
 import org.wcode.database.schema.AuthorSchema
+import org.wcode.database.schema.QuoteLocalizationSchema
 import org.wcode.database.schema.QuoteSchema
+import org.wcode.database.tables.QuoteLocalizationTable
 import org.wcode.database.tables.QuoteTable
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
@@ -22,12 +24,18 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
             mAuthor?.let {
                 val mQuote = QuoteSchema.new(UUID.fromString(instance.id)) {
                     this.author = mAuthor
-                    this.message = instance.message
-                    this.timestamp = Calendar.getInstance().timeInMillis
+                    this.timestamp = instance.timestamp
+                    this.type = instance.type
+                }
+                instance.messages.forEach { message ->
+                    QuoteLocalizationSchema.new(UUID.fromString(message.id)) {
+                        this.code = message.code
+                        this.message = message.message
+                        this.quote = mQuote
+                    }
                 }
                 Result.success(mQuote.toDTO())
             } ?: Result.failure(NoSuchElementException())
-
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -82,8 +90,16 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
             val mQuote = QuoteSchema.findById(UUID.fromString(instance.id))
             if (mAuthor != null && mQuote != null) {
                 mQuote.author = mAuthor
-                mQuote.message = instance.message
+                instance.messages.forEach { message ->
+                    val mMessage = QuoteLocalizationSchema.findById(UUID.fromString(message.id))
+                        ?: QuoteLocalizationSchema.new(
+                            UUID.fromString(message.id)
+                        ) {}
+                    mMessage.code = message.code
+                    mMessage.message = message.message
+                }
                 mQuote.timestamp = instance.timestamp
+                mQuote.type = instance.type
                 Result.success(mQuote.toDTO())
             } else {
                 Result.failure(NoSuchElementException())
@@ -93,10 +109,14 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
         }
     }
 
-    fun getRandom(): Result<QuoteDTO> = transaction(db) {
+    fun getRandom(languageCode: String = "None"): Result<QuoteDTO> = transaction(db) {
         try {
-            val quote = QuoteSchema.all().toList().random()
-            Result.success(quote.toDTO())
+            val quote = QuoteSchema.all().toList().random().toDTO()
+            val messages = quote.messages.filter { it.code == languageCode }
+            if (messages.isNotEmpty()) {
+                quote.messages = messages
+            }
+            Result.success(quote)
         } catch (e: Exception) {
             Result.failure(e)
         }
