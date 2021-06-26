@@ -112,7 +112,7 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
     fun getRandom(languageCode: String = "None"): Result<QuoteDTO> = transaction(db) {
         try {
             val quote = QuoteSchema.all().toList().random().toDTO()
-            val messages = quote.messages.filter { it.code == languageCode }
+            val messages = quote.messages.filter { it.code.startsWith(languageCode) }
             if (messages.isNotEmpty()) {
                 quote.messages = messages
             }
