@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          path: /
+          context: ./
           tags: |
             docker.pkg.github.com/${{ github.repository }}/sentency-server:${{ github.sha }}
             docker.pkg.github.com/${{ github.repository }}/sentency-server:${{ github.event.release.tag_name }}
