@@ -48,9 +48,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name : machine ls $GITHUB_WORKSPACE
-        run : "ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
-
       - name: Build container image
         uses: docker/build-push-action@v2
         with:
