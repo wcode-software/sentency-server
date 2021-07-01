@@ -1,12 +1,12 @@
-package org.wcode.database.connections
+package org.wcode.database.sql.connectors
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.wcode.database.core.BaseConnection
+import org.wcode.database.sql.core.BaseSQLConnector
 import java.io.File
 import java.sql.Connection
 
-class SQLiteConnection : BaseConnection() {
+class SQLiteConnector : BaseSQLConnector() {
 
     override fun connectToDB(): Database {
         val filename = File("sentency.db").absolutePath

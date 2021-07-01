@@ -1,6 +1,5 @@
 package org.wcode.routes
 
-import de.nielsfalk.ktor.swagger.version.shared.ParameterInputType
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -9,8 +8,8 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.wcode.database.dao.AuthorDAO
-import org.wcode.database.dao.QuoteDAO
+import org.wcode.database.sql.dao.AuthorDAO
+import org.wcode.database.sql.dao.QuoteDAO
 import org.wcode.dto.PaginatedDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.interfaces.BaseRoute

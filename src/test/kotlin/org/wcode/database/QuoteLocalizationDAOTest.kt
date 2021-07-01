@@ -3,10 +3,10 @@ package org.wcode.database
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.wcode.database.connections.H2Connection
-import org.wcode.database.dao.AuthorDAO
-import org.wcode.database.dao.QuoteDAO
-import org.wcode.database.dao.QuoteLocalizationDAO
+import org.wcode.core.H2Connector
+import org.wcode.database.sql.dao.AuthorDAO
+import org.wcode.database.sql.dao.QuoteDAO
+import org.wcode.database.sql.dao.QuoteLocalizationDAO
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.dto.QuoteLocalizationDTO
@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 
 class QuoteLocalizationDAOTest {
 
-    private val database = H2Connection().init()
+    private val database = H2Connector().init()
 
     private val authorDao = AuthorDAO(database)
     private val quoteLocalizationDAO = QuoteLocalizationDAO(database)

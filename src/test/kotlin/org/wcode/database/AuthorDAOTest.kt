@@ -1,14 +1,14 @@
 package org.wcode.database
 
 import org.junit.Test
-import org.wcode.database.connections.H2Connection
-import org.wcode.database.dao.AuthorDAO
+import org.wcode.core.H2Connector
+import org.wcode.database.sql.dao.AuthorDAO
 import org.wcode.dto.AuthorDTO
 import kotlin.test.assertEquals
 
 class AuthorDAOTest {
 
-    private val database = H2Connection().init()
+    private val database = H2Connector().init()
     private val authorDao = AuthorDAO(database)
     private val author = AuthorDTO(id = "Test", name = "Test", picUrl = "TestPic")
 

@@ -1,14 +1,14 @@
-package org.wcode.database.core
+package org.wcode.database.sql.core
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.wcode.database.tables.AuthorTable
-import org.wcode.database.tables.QuoteLocalizationTable
-import org.wcode.database.tables.QuoteTable
-import org.wcode.database.tables.UserTable
+import org.wcode.database.sql.tables.AuthorTable
+import org.wcode.database.sql.tables.QuoteLocalizationTable
+import org.wcode.database.sql.tables.QuoteTable
+import org.wcode.database.sql.tables.UserTable
 
-abstract class BaseConnection {
+abstract class BaseSQLConnector {
     private val tables = listOf(AuthorTable, QuoteTable, UserTable, QuoteLocalizationTable)
 
     fun init(): Database {

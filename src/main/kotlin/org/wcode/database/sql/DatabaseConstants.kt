@@ -1,4 +1,4 @@
-package org.wcode.database
+package org.wcode.database.sql
 
 object DatabaseConstants {
     object Quote {

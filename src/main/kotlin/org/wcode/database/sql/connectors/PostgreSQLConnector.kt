@@ -1,13 +1,13 @@
-package org.wcode.database.connections
+package org.wcode.database.sql.connectors
 
 import org.jetbrains.exposed.sql.Database
-import org.wcode.database.core.BaseConnection
+import org.wcode.database.sql.core.BaseSQLConnector
 
-class PostgreSQLConnection(
+class PostgreSQLConnector(
     val name: String,
     val user: String,
     val password: String
-) : BaseConnection() {
+) : BaseSQLConnector() {
     override fun connectToDB(): Database {
         return Database.connect(
             "jdbc:postgresql://sentency_database:5432/${name}",

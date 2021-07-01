@@ -8,7 +8,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.wcode.database.dao.AuthorDAO
+import org.wcode.database.sql.dao.AuthorDAO
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.PaginatedDTO
 import org.wcode.interfaces.BaseRoute

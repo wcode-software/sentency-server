@@ -6,14 +6,13 @@ import io.ktor.serialization.*
 import org.koin.dsl.module
 import org.koin.ktor.ext.Koin
 import org.koin.logger.SLF4JLogger
-import org.wcode.database.connections.PostgreSQLConnection
-import org.wcode.database.connections.SQLiteConnection
-import org.wcode.database.core.BaseConnection
-import org.wcode.database.dao.AuthorDAO
-import org.wcode.database.dao.QuoteDAO
+import org.wcode.database.sql.connectors.PostgreSQLConnector
+import org.wcode.database.sql.connectors.SQLiteConnector
+import org.wcode.database.sql.core.BaseSQLConnector
 import org.wcode.core.EnvironmentConfig
-import org.wcode.database.dao.QuoteLocalizationDAO
-import org.wcode.database.dao.UserDAO
+import org.wcode.database.nosql.connectors.MongoConnection
+import org.wcode.database.nosql.dao.QueueLocalizationDAO
+import org.wcode.database.sql.dao.*
 
 fun Application.configureDependencyInjection() {
     install(Koin) {
@@ -30,17 +29,19 @@ val daoModule = module {
     single { AuthorDAO(get()) }
     single { UserDAO(get()) }
     single { QuoteLocalizationDAO(get()) }
+    single { QueueLocalizationDAO(get()) }
 }
 
 val databaseModule = module {
     single { createDB().init() }
+    single { MongoConnection().init() }
 }
 
-fun createDB(): BaseConnection {
+fun createDB(): BaseSQLConnector {
     return if (EnvironmentConfig.flavor == "development")
-        SQLiteConnection()
+        SQLiteConnector()
     else
-        PostgreSQLConnection(
+        PostgreSQLConnector(
             name = EnvironmentConfig.databaseName,
             user = EnvironmentConfig.databaseUsername,
             password = EnvironmentConfig.databasePassword

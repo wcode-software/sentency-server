@@ -4,15 +4,15 @@ import org.junit.Before
 import org.junit.Test
 import org.wcode.core.Cryptography
 import org.wcode.core.Cryptography.decrypt
-import org.wcode.database.connections.H2Connection
-import org.wcode.database.dao.UserDAO
+import org.wcode.core.H2Connector
+import org.wcode.database.sql.dao.UserDAO
 import org.wcode.dto.UserDTO
 import java.util.*
 import kotlin.test.assertEquals
 
 class UserDAOTest {
 
-    private val database = H2Connection().init()
+    private val database = H2Connector().init()
 
     private val userDAO = UserDAO(database)
 

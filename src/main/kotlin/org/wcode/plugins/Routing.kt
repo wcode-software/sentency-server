@@ -3,13 +3,10 @@ package org.wcode.plugins
 import io.ktor.routing.*
 import io.ktor.application.*
 import io.ktor.response.*
-import org.wcode.routes.AuthorRoutes
-import org.wcode.routes.QuoteLocalizationRoutes
-import org.wcode.routes.QuoteRoutes
-import org.wcode.routes.UserRoutes
+import org.wcode.routes.*
 
 fun Application.configureRouting() {
-    val routes = listOf(AuthorRoutes(), QuoteRoutes(), UserRoutes(), QuoteLocalizationRoutes())
+    val routes = listOf(AuthorRoutes(), QuoteRoutes(), UserRoutes(), QuoteLocalizationRoutes(), QueueRoutes())
     routing {
         get("/") {
             call.respondText("Hello World!")

@@ -1,9 +1,9 @@
-package org.wcode.database.schema
+package org.wcode.database.sql.schema
 
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.wcode.database.core.BaseSchema
-import org.wcode.database.tables.UserTable
+import org.wcode.database.sql.core.BaseSchema
+import org.wcode.database.sql.tables.UserTable
 import org.wcode.dto.UserDTO
 import java.util.*
 

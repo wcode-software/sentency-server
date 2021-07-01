@@ -1,4 +1,4 @@
-package org.wcode.database.core
+package org.wcode.database.sql.core
 
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.id.EntityID
