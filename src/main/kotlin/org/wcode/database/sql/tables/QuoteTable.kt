@@ -1,8 +1,8 @@
-package org.wcode.database.tables
+package org.wcode.database.sql.tables
 
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.wcode.database.DatabaseConstants
+import org.wcode.database.sql.DatabaseConstants
 
 object QuoteTable : UUIDTable() {
     val author = reference(DatabaseConstants.Quote.author, AuthorTable, onDelete = ReferenceOption.CASCADE)

@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.auth.jwt.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.wcode.database.dao.UserDAO
+import org.wcode.database.sql.dao.UserDAO
 import org.wcode.dto.UserDTO
 import java.util.*
 

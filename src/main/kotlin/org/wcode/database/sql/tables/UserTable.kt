@@ -1,7 +1,7 @@
-package org.wcode.database.tables
+package org.wcode.database.sql.tables
 
 import org.jetbrains.exposed.dao.id.UUIDTable
-import org.wcode.database.DatabaseConstants
+import org.wcode.database.sql.DatabaseConstants
 
 object UserTable : UUIDTable() {
     val email = varchar(DatabaseConstants.User.email, 200).uniqueIndex()

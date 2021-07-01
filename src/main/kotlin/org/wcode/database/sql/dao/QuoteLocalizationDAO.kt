@@ -1,11 +1,11 @@
-package org.wcode.database.dao
+package org.wcode.database.sql.dao
 
 import io.ktor.features.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.wcode.database.core.BaseDao
-import org.wcode.database.schema.QuoteLocalizationSchema
-import org.wcode.database.schema.QuoteSchema
+import org.wcode.database.sql.core.BaseDao
+import org.wcode.database.sql.schema.QuoteLocalizationSchema
+import org.wcode.database.sql.schema.QuoteSchema
 import org.wcode.dto.QuoteLocalizationDTO
 import java.lang.RuntimeException
 import java.util.*

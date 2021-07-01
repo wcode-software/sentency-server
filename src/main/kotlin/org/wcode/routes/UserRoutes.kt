@@ -9,7 +9,7 @@ import io.ktor.routing.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.wcode.core.EnvironmentConfig
-import org.wcode.database.dao.UserDAO
+import org.wcode.database.sql.dao.UserDAO
 import org.wcode.dto.LoginUserDTO
 import org.wcode.dto.PaginatedDTO
 import org.wcode.dto.QuoteDTO

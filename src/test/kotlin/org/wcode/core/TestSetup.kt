@@ -9,8 +9,6 @@ import org.koin.dsl.module
 import org.koin.ktor.ext.Koin
 import org.koin.logger.SLF4JLogger
 import org.wcode.core.Cryptography.initCipher
-import org.wcode.database.connections.H2Connection
-import org.wcode.plugins.configureAuth
 import org.wcode.plugins.configureHTTP
 import org.wcode.plugins.configureRouting
 import org.wcode.plugins.daoModule
@@ -33,7 +31,8 @@ fun Application.configureTestModules() {
 }
 
 val databaseTestModule = module {
-    single { H2Connection().init() }
+    single { H2Connector().init() }
+    single { MockMongoConnector().init() }
 }
 
 fun Application.configureSettingsTest() {

@@ -1,4 +1,4 @@
-package org.wcode.database.dao
+package org.wcode.database.sql.dao
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
@@ -6,9 +6,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.wcode.core.Cryptography.decrypt
 import org.wcode.core.Cryptography.encrypt
 import org.wcode.core.Security.makeToken
-import org.wcode.database.core.BaseDao
-import org.wcode.database.schema.UserSchema
-import org.wcode.database.tables.UserTable
+import org.wcode.database.sql.core.BaseDao
+import org.wcode.database.sql.schema.UserSchema
+import org.wcode.database.sql.tables.UserTable
 import org.wcode.dto.AuthDTO
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.UserDTO

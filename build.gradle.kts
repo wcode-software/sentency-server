@@ -6,6 +6,7 @@ val logbackVersion: String by project
 val exposedVersion: String by project
 val koinVersion: String by project
 val jacocoVersion: String by project
+val kMongoVersion: String by project
 
 plugins {
     application
@@ -16,7 +17,7 @@ plugins {
 }
 
 group = "org.wcode"
-version = "1.3.2"
+version = "1.4.0"
 application {
     mainClass.set("org.wcode.ApplicationKt")
 }
@@ -49,18 +50,20 @@ dependencies {
 
     //Database Connectors
     implementation("org.xerial:sqlite-jdbc:3.34.0")
-    implementation("com.h2database:h2:1.4.200")
     implementation("org.postgresql:postgresql:42.2.20")
 
     //Koin
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 
-    //Swagger
-    implementation("com.github.nielsfalk:ktor-swagger:0.7.0")
+    //Mongo
+    implementation("org.litote.kmongo:kmongo:$kMongoVersion")
 
     //Test
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    testImplementation("de.bwaldvogel:mongo-java-server:1.38.0")
+    testImplementation("com.h2database:h2:1.4.200")
+
 }
 
 jacoco {
@@ -92,8 +95,10 @@ sonarqube {
         val excludeFiles = listOf(
             "**/*Application.kt",
             "**/plugins/**.kt",
-            "**/database/connections/**.kt",
-            "**/database/core/**.kt",
+            "**/database/nosql/connectors/**.kt",
+            "**/database/nosql/core/**.kt",
+            "**/database/sql/connectors/**.kt",
+            "**/database/sql/core/**.kt",
             "**/core/**.kt"
         )
 

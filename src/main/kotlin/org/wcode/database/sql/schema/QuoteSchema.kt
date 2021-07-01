@@ -1,10 +1,10 @@
-package org.wcode.database.schema
+package org.wcode.database.sql.schema
 
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.wcode.database.core.BaseSchema
-import org.wcode.database.tables.QuoteLocalizationTable
-import org.wcode.database.tables.QuoteTable
+import org.wcode.database.sql.core.BaseSchema
+import org.wcode.database.sql.tables.QuoteLocalizationTable
+import org.wcode.database.sql.tables.QuoteTable
 import org.wcode.dto.QuoteDTO
 import java.util.*
 

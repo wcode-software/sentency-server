@@ -1,11 +1,11 @@
-package org.wcode.database.dao
+package org.wcode.database.sql.dao
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.wcode.database.core.BaseDao
-import org.wcode.database.schema.AuthorSchema
-import org.wcode.database.tables.AuthorTable
-import org.wcode.database.tables.QuoteTable
+import org.wcode.database.sql.core.BaseDao
+import org.wcode.database.sql.schema.AuthorSchema
+import org.wcode.database.sql.tables.AuthorTable
+import org.wcode.database.sql.tables.QuoteTable
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import java.util.*

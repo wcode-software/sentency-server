@@ -1,15 +1,15 @@
-package org.wcode.database.dao
+package org.wcode.database.sql.dao
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.wcode.database.core.BaseDao
-import org.wcode.database.schema.AuthorSchema
-import org.wcode.database.schema.QuoteLocalizationSchema
-import org.wcode.database.schema.QuoteSchema
-import org.wcode.database.tables.QuoteLocalizationTable
-import org.wcode.database.tables.QuoteTable
+import org.wcode.database.sql.core.BaseDao
+import org.wcode.database.sql.schema.AuthorSchema
+import org.wcode.database.sql.schema.QuoteLocalizationSchema
+import org.wcode.database.sql.schema.QuoteSchema
+import org.wcode.database.sql.tables.QuoteLocalizationTable
+import org.wcode.database.sql.tables.QuoteTable
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.utils.CalendarUtils

@@ -9,7 +9,7 @@ import io.ktor.routing.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.wcode.core.EnvironmentConfig
-import org.wcode.database.dao.QuoteLocalizationDAO
+import org.wcode.database.sql.dao.QuoteLocalizationDAO
 import org.wcode.dto.QuoteLocalizationDTO
 import org.wcode.interfaces.BaseRoute
 
