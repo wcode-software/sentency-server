@@ -26,6 +26,9 @@ object EnvironmentConfig {
     var issuer: String = "sentency.io"
         private set
 
+    var mongoHost: String = "localhost"
+        private set
+
     fun initializeConfig(applicationConfig: HoconApplicationConfig) {
         flavor = applicationConfig.propertyOrNull("ktor.flavor")?.getString() ?: "development"
         apiKey = applicationConfig.propertyOrNull("ktor.apiKey")?.getString() ?: "APIKEY"
@@ -33,6 +36,7 @@ object EnvironmentConfig {
 
         initializeDatabase(applicationConfig)
         initializeJWT(applicationConfig)
+        initializeMongo(applicationConfig)
     }
 
     private fun initializeDatabase(applicationConfig: HoconApplicationConfig) {
@@ -44,5 +48,9 @@ object EnvironmentConfig {
     private fun initializeJWT(applicationConfig: HoconApplicationConfig) {
         secret = applicationConfig.propertyOrNull("jwt.secret")?.getString() ?: "1234567890abcdefghijklmn"
         issuer = applicationConfig.propertyOrNull("jwt.issuer")?.getString() ?: "sentency.io"
+    }
+
+    private fun initializeMongo(applicationConfig: HoconApplicationConfig) {
+        mongoHost = applicationConfig.propertyOrNull("mongo.host")?.getString() ?: "localhost"
     }
 }

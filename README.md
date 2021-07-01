@@ -15,6 +15,8 @@ add some third party libraries to fill some gaps:
 
 * [Ktor](https://ktor.io/): Ktor is an asynchronous framework for creating microservices, web applications, and more.
 * [Exposed](https://github.com/JetBrains/Exposed): an ORM framework for Kotlin created by JetBrains
+* [KMongo](https://litote.org/kmongo/): a Kotlin toolkit for Mongo
+* [Koin](https://insert-koin.io/): a smart Kotlin injection library to keep you focused on your app, not on your tools
 
 ## Docker
 
@@ -50,6 +52,7 @@ itself.
 * DB_PASSWORD: When in production the password to connect to database
 * JWT_SECRET: Secret used to generate JWT tokens
 * JWT_ISSUER: Issuer of the JWT tokens
+* MONGO_HOST: Host address of Mongo Database
 
 ## Test coverage
 
