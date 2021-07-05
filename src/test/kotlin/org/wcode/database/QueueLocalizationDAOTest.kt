@@ -17,13 +17,17 @@ class QueueLocalizationDAOTest {
     fun `Insert quote into queue`() {
         queueLocalizationDAO.insert(quoteLocalizationDTO)
         assertEquals(1, queueLocalizationDAO.listAll().size)
-        queueLocalizationDAO.drop(quoteLocalizationDTO.id)
+        queueLocalizationDAO.listAll().forEach { queueDTO ->
+            queueLocalizationDAO.drop(queueDTO.id)
+        }
     }
 
     @Test
     fun `Delete quote from queue`() {
         queueLocalizationDAO.insert(quoteLocalizationDTO)
-        queueLocalizationDAO.drop(quoteLocalizationDTO.id)
+        queueLocalizationDAO.listAll().forEach { queueDTO ->
+            queueLocalizationDAO.drop(queueDTO.id)
+        }
         assertEquals(0, queueLocalizationDAO.listAll().size)
     }
 
@@ -37,9 +41,10 @@ class QueueLocalizationDAOTest {
         localizations.forEach { locale ->
             queueLocalizationDAO.insert(locale)
         }
+
         assertEquals(3, queueLocalizationDAO.listAll().size)
-        localizations.forEach { locale ->
-            queueLocalizationDAO.drop(locale.id)
+        queueLocalizationDAO.listAll().forEach { queueDTO ->
+            queueLocalizationDAO.drop(queueDTO.id)
         }
     }
 

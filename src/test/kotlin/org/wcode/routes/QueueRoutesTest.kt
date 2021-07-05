@@ -80,16 +80,27 @@ class QueueRoutesTest {
                 }
             }
 
-            handleRequest(HttpMethod.Delete, "/queue/language/${quoteLocalization.id}") {
+            handleRequest(HttpMethod.Get, "/queue/language") {
                 addHeader("apiKey", "APIKEY")
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
+                response.content?.let {
+                    val response = Json.decodeFromString<List<QueueDTO<QuoteLocalizationDTO>>>(it)
+                    response.forEach { queueDTO ->
+                        handleRequest(HttpMethod.Delete, "/queue/language/${queueDTO.id}") {
+                            addHeader("apiKey", "APIKEY")
+                        }.apply {
+                            assertEquals(HttpStatusCode.OK, this.response.status())
+                        }
+                    }
+                }
             }
         }
     }
 
     @Test
-    fun `Delete localization to queue`() {
+    fun `Delete localization from queue`() {
         withTestApplication({ setupTestApplication() }) {
             val quoteLocalization =
                 QuoteLocalizationDTO(code = "Te", quoteId = "quoteId", message = "Localization test")
@@ -101,13 +112,24 @@ class QueueRoutesTest {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleRequest(HttpMethod.Delete, "/queue/language/${quoteLocalization.id}") {
+            handleRequest(HttpMethod.Get, "/queue/language") {
                 addHeader("apiKey", "APIKEY")
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 response.content?.let {
-                    val response = Json.decodeFromString<ResponseDTO>(it)
-                    assertEquals(true, response.success)
+                    val response = Json.decodeFromString<List<QueueDTO<QuoteLocalizationDTO>>>(it)
+                    response.forEach { queueDTO ->
+                        handleRequest(HttpMethod.Delete, "/queue/language/${queueDTO.id}") {
+                            addHeader("apiKey", "APIKEY")
+                        }.apply {
+                            assertEquals(HttpStatusCode.OK, this.response.status())
+                            this.response.content?.let {
+                                val responseList = Json.decodeFromString<ResponseDTO>(it)
+                                assertEquals(true, responseList.success)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -165,17 +187,16 @@ class QueueRoutesTest {
                 response.content?.let {
                     val response = Json.decodeFromString<List<QueueDTO<QuoteLocalizationDTO>>>(it)
                     assertEquals(3, response.size)
-                }
-            }
-
-            quoteLocalizations.forEach { quoteLocalization ->
-                handleRequest(HttpMethod.Delete, "/queue/language/${quoteLocalization.id}") {
-                    addHeader("apiKey", "APIKEY")
-                }.apply {
-                    assertEquals(HttpStatusCode.OK, response.status())
-                    response.content?.let {
-                        val response = Json.decodeFromString<ResponseDTO>(it)
-                        assertEquals(true, response.success)
+                    response.forEach { queueDTO ->
+                        handleRequest(HttpMethod.Delete, "/queue/language/${queueDTO.id}") {
+                            addHeader("apiKey", "APIKEY")
+                        }.apply {
+                            assertEquals(HttpStatusCode.OK, this.response.status())
+                            this.response.content?.let {
+                                val responseList = Json.decodeFromString<ResponseDTO>(it)
+                                assertEquals(true, responseList.success)
+                            }
+                        }
                     }
                 }
             }
