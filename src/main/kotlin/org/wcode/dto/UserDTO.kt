@@ -18,6 +18,9 @@ data class UserDTO(
     }
 
     fun hidePassword() {
-        this.password = "***********"
+        this.password = hiddenString()
     }
+
+    private fun hiddenString(): String = "***********"
+
 }
