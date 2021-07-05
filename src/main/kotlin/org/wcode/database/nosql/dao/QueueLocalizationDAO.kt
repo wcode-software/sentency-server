@@ -3,10 +3,7 @@ package org.wcode.database.nosql.dao
 import com.mongodb.client.MongoDatabase
 import io.ktor.features.*
 import org.bson.types.ObjectId
-import org.litote.kmongo.deleteOne
-import org.litote.kmongo.findOne
-import org.litote.kmongo.findOneById
-import org.litote.kmongo.getCollection
+import org.litote.kmongo.*
 import org.litote.kmongo.util.idValue
 import org.wcode.database.nosql.CollectionsConstants
 import org.wcode.database.nosql.models.QuoteLocalizationMongo
@@ -21,9 +18,9 @@ class QueueLocalizationDAO(private val database: MongoDatabase) {
         collection.insertOne(newObject)
     }
 
-    fun drop(localizationId: String): Boolean {
+    fun drop(id: String): Boolean {
         val collection = database.getCollection(CollectionsConstants.language)
-        val query = collection.deleteOne("{'id': '$localizationId'}")
+        val query = collection.deleteOneById(ObjectId(id))
         return query.deletedCount == 1L
     }
 
