@@ -1,6 +1,7 @@
 package org.wcode.routes
 
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -25,9 +26,11 @@ class QueueRoutes : BaseRoute, KoinComponent {
                 header("apiKey", EnvironmentConfig.apiKey) {
                     route("/language") {
                         insertLocalization()
-                        removeLocalization()
-                        listLocalizations()
-                        applyLocalization()
+                        authenticate {
+                            removeLocalization()
+                            applyLocalization()
+                            listLocalizations()
+                        }
                     }
                 }
             }
