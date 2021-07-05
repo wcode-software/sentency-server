@@ -75,7 +75,7 @@ class QueueRoutes : BaseRoute, KoinComponent {
             val languageId = call.parameters["languageId"] ?: return@post call.respond(HttpStatusCode.BadRequest)
             queueLocalizationDAO.getById(languageId).onSuccess {
                 quoteLocalizationDAO.update(it.data).onSuccess { localization ->
-                    queueLocalizationDAO.drop(localization.id)
+                    queueLocalizationDAO.drop(languageId)
                     call.respond(ResponseDTO())
                 }.onFailure { throwable ->
                     call.respond(ResponseDTO(success = false, error = throwable.message))
