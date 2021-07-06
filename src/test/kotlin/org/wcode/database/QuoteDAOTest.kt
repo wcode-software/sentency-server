@@ -10,6 +10,7 @@ import org.wcode.database.sql.dao.QuoteDAO
 import org.wcode.dto.AuthorDTO
 import org.wcode.dto.QuoteDTO
 import org.wcode.dto.QuoteLocalizationDTO
+import java.util.*
 import kotlin.test.assertEquals
 
 class QuoteDAOTest {
@@ -18,11 +19,12 @@ class QuoteDAOTest {
     private val authorDao = AuthorDAO(database)
     private val quoteDao = QuoteDAO(database)
 
-    private val author = AuthorDTO(id = "Test", name = "Test", picUrl = "TestPic")
+    private val quoteId = UUID.randomUUID().toString()
+    private val author = AuthorDTO(name = "Test", picUrl = "TestPic")
     private val quote = QuoteDTO(
-        id = "Test", authorId = author.id, messages = listOf(
-            QuoteLocalizationDTO(quoteId = "Test", message = "message 1", code = "Te"),
-            QuoteLocalizationDTO(quoteId = "Test", message = "message 2", code = "Te2")
+        id = quoteId, authorId = author.id, messages = listOf(
+            QuoteLocalizationDTO(quoteId = quoteId, message = "message 1", code = "Te"),
+            QuoteLocalizationDTO(quoteId = quoteId, message = "message 2", code = "Pe2")
         )
     )
 
@@ -51,14 +53,19 @@ class QuoteDAOTest {
 
     @Test
     fun `Getting random quote with localization`() {
-        quoteDao.insert(quote).onSuccess {
-            quoteDao.getRandom("Te").onSuccess {
-                assertEquals(1, it.messages.size)
-                assertEquals(quote.messages[0].message, it.messages[0].message)
-            }.onFailure {
+        val resultInsert = quoteDao.insert(quote)
+        if (resultInsert.isSuccess) {
+            val resultRandom = quoteDao.getRandom("Te")
+            if (resultInsert.isSuccess) {
+                resultRandom.getOrNull()?.let {
+                    assertEquals(1, it.messages.size)
+                    assertEquals(quote.messages[0].message, it.messages[0].message)
+                }
+            } else {
                 assert(false)
             }
-            quoteDao.delete(quote.id)
+        } else {
+            assert(false)
         }
     }
 
