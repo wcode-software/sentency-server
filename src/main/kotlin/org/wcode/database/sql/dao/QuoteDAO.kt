@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.wcode.database.sql.DatabaseConstants
 import org.wcode.database.sql.core.BaseDao
 import org.wcode.database.sql.schema.AuthorSchema
 import org.wcode.database.sql.schema.QuoteLocalizationSchema
@@ -111,7 +112,15 @@ class QuoteDAO(private val db: Database) : BaseDao<QuoteDTO> {
 
     fun getRandom(languageCode: String = "None"): Result<QuoteDTO> = transaction(db) {
         try {
-            val quote = QuoteSchema.all().toList().random().toDTO()
+            val localizations = QuoteLocalizationTable.select {
+                QuoteLocalizationTable.code eq languageCode
+            }.toList()
+            val quote = if (localizations.isEmpty()) {
+                QuoteSchema.all().toList().random()
+            } else {
+                val randomQuoteId = localizations.random()[QuoteLocalizationTable.quote]
+                QuoteSchema[randomQuoteId]
+            }.toDTO()
             val messages = quote.messages.filter { it.code.startsWith(languageCode) }
             if (messages.isNotEmpty()) {
                 quote.messages = messages
