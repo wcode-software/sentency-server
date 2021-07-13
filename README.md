@@ -53,6 +53,7 @@ itself.
 * JWT_SECRET: Secret used to generate JWT tokens
 * JWT_ISSUER: Issuer of the JWT tokens
 * MONGO_HOST: Host address of Mongo Database
+* RECAPTCHA_SECRET: ReCaptcha secret key to validate ReCaptcha V3 tokens
 
 ## Test coverage
 

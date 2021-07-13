@@ -29,6 +29,9 @@ object EnvironmentConfig {
     var mongoHost: String = "localhost"
         private set
 
+    var reCaptchaKey: String = "recaptcha_secret_key"
+        private set
+
     fun initializeConfig(applicationConfig: HoconApplicationConfig) {
         flavor = applicationConfig.propertyOrNull("ktor.flavor")?.getString() ?: "development"
         apiKey = applicationConfig.propertyOrNull("ktor.apiKey")?.getString() ?: "APIKEY"
@@ -37,6 +40,7 @@ object EnvironmentConfig {
         initializeDatabase(applicationConfig)
         initializeJWT(applicationConfig)
         initializeMongo(applicationConfig)
+        initializeReCaptcha(applicationConfig)
     }
 
     private fun initializeDatabase(applicationConfig: HoconApplicationConfig) {
@@ -52,5 +56,9 @@ object EnvironmentConfig {
 
     private fun initializeMongo(applicationConfig: HoconApplicationConfig) {
         mongoHost = applicationConfig.propertyOrNull("mongo.host")?.getString() ?: "localhost"
+    }
+
+    private fun initializeReCaptcha(applicationConfig: HoconApplicationConfig) {
+        reCaptchaKey = applicationConfig.propertyOrNull("recaptcha.secretKey")?.getString() ?: "6LfNBZAbAAAAADAbUS-kCzHIcIWgBYm9JXp54NEu"
     }
 }

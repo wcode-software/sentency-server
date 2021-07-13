@@ -13,11 +13,12 @@ import org.wcode.core.EnvironmentConfig
 import org.wcode.database.nosql.connectors.MongoConnection
 import org.wcode.database.nosql.dao.QueueLocalizationDAO
 import org.wcode.database.sql.dao.*
+import org.wcode.external.services.GoogleService
 
 fun Application.configureDependencyInjection() {
     install(Koin) {
         SLF4JLogger()
-        modules(databaseModule, daoModule)
+        modules(databaseModule, daoModule, serviceModule)
     }
     install(ContentNegotiation) {
         json()
@@ -35,6 +36,10 @@ val daoModule = module {
 val databaseModule = module {
     single { createDB().init() }
     single { MongoConnection().init() }
+}
+
+val serviceModule = module {
+    single { GoogleService() }
 }
 
 fun createDB(): BaseSQLConnector {

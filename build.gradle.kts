@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "org.wcode"
-version = "1.4.2"
+version = "1.5.0"
 application {
     mainClass.set("org.wcode.ApplicationKt")
 }
@@ -37,6 +37,10 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-server-jetty:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     //Auth
@@ -99,7 +103,8 @@ sonarqube {
             "**/database/nosql/core/**.kt",
             "**/database/sql/connectors/**.kt",
             "**/database/sql/core/**.kt",
-            "**/core/**.kt"
+            "**/core/**.kt",
+            "**/external/**"
         )
 
         property("sonar.sources", "src/main/kotlin")
