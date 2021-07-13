@@ -59,6 +59,6 @@ object EnvironmentConfig {
     }
 
     private fun initializeReCaptcha(applicationConfig: HoconApplicationConfig) {
-        reCaptchaKey = applicationConfig.propertyOrNull("recaptcha.secretKey")?.getString() ?: "6LfNBZAbAAAAADAbUS-kCzHIcIWgBYm9JXp54NEu"
+        reCaptchaKey = applicationConfig.propertyOrNull("recaptcha.secretKey")?.getString() ?: "recaptcha_secret_key"
     }
 }
