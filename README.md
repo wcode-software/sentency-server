@@ -54,6 +54,7 @@ itself.
 * JWT_ISSUER: Issuer of the JWT tokens
 * MONGO_HOST: Host address of Mongo Database
 * RECAPTCHA_SECRET: ReCaptcha secret key to validate ReCaptcha V3 tokens
+* GCP_API_KEY: Key used to enable translation suggestions for quotes
 
 ## Test coverage
 

@@ -1,7 +1,6 @@
 package org.wcode.core
 
 import io.ktor.config.*
-import org.eclipse.jetty.util.log.Log
 
 object EnvironmentConfig {
 
@@ -32,10 +31,12 @@ object EnvironmentConfig {
     var reCaptchaKey: String = "recaptcha_secret_key"
         private set
 
+    var gcpAPIKey: String = "gcp_api_key"
+        private set
+
     fun initializeConfig(applicationConfig: HoconApplicationConfig) {
         flavor = applicationConfig.propertyOrNull("ktor.flavor")?.getString() ?: "development"
         apiKey = applicationConfig.propertyOrNull("ktor.apiKey")?.getString() ?: "APIKEY"
-        Log.getLog().info("Settings initialized on flavor $flavor")
 
         initializeDatabase(applicationConfig)
         initializeJWT(applicationConfig)
@@ -59,6 +60,7 @@ object EnvironmentConfig {
     }
 
     private fun initializeReCaptcha(applicationConfig: HoconApplicationConfig) {
-        reCaptchaKey = applicationConfig.propertyOrNull("recaptcha.secretKey")?.getString() ?: "recaptcha_secret_key"
+        reCaptchaKey = applicationConfig.propertyOrNull("google.recaptchaKey")?.getString() ?: "recaptcha_secret_key"
+        gcpAPIKey = applicationConfig.propertyOrNull("google.gcpAPIKey")?.getString() ?: "gcp_api_key"
     }
 }
