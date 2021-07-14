@@ -31,15 +31,16 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-cio:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-locations:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
+
+    // Ktor Client
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation ("io.ktor:ktor-client-gson:$ktorVersion")
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
