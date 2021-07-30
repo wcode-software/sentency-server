@@ -1,34 +1,43 @@
 package org.wcode.author.service.controllers
 
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Delete
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.*
 import org.wcode.author.service.models.Author
+import org.wcode.author.service.models.GenericResponse
+import org.wcode.author.service.services.AuthorService
+import javax.inject.Inject
 
 @Controller("/author")
 class AuthorController {
 
-    private val authors = mutableListOf<Author>()
+    @Inject
+    lateinit var authorService: AuthorService
 
     @Get("/all")
     fun listAllAuthors(): List<Author> {
-        return authors
+        return authorService.listAllAuthors()
     }
 
     @Get("/{id}")
     fun getById(id: String): Author? {
-        return authors.find { it.id == id }
+        return authorService.getById(id)
     }
 
     @Delete("/{id}")
-    fun deleteById(id: String): Boolean {
-        return authors.removeIf { it.id == id }
+    fun deleteById(id: String): GenericResponse {
+        return if (authorService.deleteById(id)) {
+            GenericResponse(true)
+        } else {
+            GenericResponse(false, "Unable to delete author")
+        }
     }
 
     @Post("/")
     fun insertAuthor(author: Author): Author {
-        authors.add(author)
-        return author
+        return authorService.insertAuthor(author)
+    }
+
+    @Put("/")
+    fun updateAuthor(author: Author): Author? {
+        return authorService.updateAuthor(author)
     }
 }

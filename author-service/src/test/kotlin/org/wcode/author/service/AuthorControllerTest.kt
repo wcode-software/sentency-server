@@ -4,10 +4,12 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import org.wcode.author.service.domain.AuthorRepository
 import org.wcode.author.service.models.Author
 import javax.inject.Inject
 
@@ -16,7 +18,7 @@ class AuthorControllerTest {
 
     @Inject
     @field:Client("/")
-    lateinit var client: HttpClient
+    private lateinit var client: HttpClient
 
     @Test
     fun `Add Author without ID`() {
@@ -82,7 +84,7 @@ class AuthorControllerTest {
     }
 
     @Test
-    fun `Delete Author that doesn't exist`(){
+    fun `Delete Author that doesn't exist`() {
         val author = Author(name = "Test")
         val deleteAuthorRequest = HttpRequest.DELETE<Boolean>("/author/${author.id}")
         val bodyDelete = client.toBlocking().retrieve(deleteAuthorRequest, Argument.BOOLEAN)

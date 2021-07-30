@@ -6,8 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
 }
 
-
-version = "1.0.1"
+version = "1.0.0"
 group = "org.wcode.author.service"
 
 val kotlinVersion = project.properties["kotlinVersion"]
@@ -21,7 +20,6 @@ micronaut {
     processing {
         incremental(true)
         annotations("org.wcode.author.service.*")
-
     }
 }
 
@@ -36,19 +34,18 @@ dependencies {
 
     compileOnly("org.graalvm.nativeimage:svm")
 
-//    kapt("io.micronaut.openapi:micronaut-openapi:2.6.0")
-//    implementation("io.swagger.core.v3:swagger-annotations")
-
     implementation("io.micronaut:micronaut-validation")
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-}
 
-//kapt {
-//    arguments {
-//        arg("micronaut.openapi.views.spec", "redoc.enabled=true,rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop")
-//    }
-//}
+    // Database
+    kapt("io.micronaut.data:micronaut-data-processor:2.4.7")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    testRuntimeOnly("com.h2database:h2")
+    runtime("io.micronaut.sql:micronaut-jdbc-tomcat")
+
+
+}
 
 application {
     mainClass.set("org.wcode.author.service.ApplicationKt")
