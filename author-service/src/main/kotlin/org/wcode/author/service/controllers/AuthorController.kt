@@ -1,6 +1,8 @@
 package org.wcode.author.service.controllers
 
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.*
+import io.micronaut.http.exceptions.HttpStatusException
 import org.wcode.author.service.models.Author
 import org.wcode.author.service.models.GenericResponse
 import org.wcode.author.service.services.AuthorService
@@ -18,8 +20,8 @@ class AuthorController {
     }
 
     @Get("/{id}")
-    fun getById(id: String): Author? {
-        return authorService.getById(id)
+    fun getById(id: String): Author {
+        return authorService.getById(id) ?: throw HttpStatusException(HttpStatus.NOT_FOUND, "Author not found")
     }
 
     @Delete("/{id}")
@@ -37,7 +39,7 @@ class AuthorController {
     }
 
     @Put("/")
-    fun updateAuthor(author: Author): Author? {
-        return authorService.updateAuthor(author)
+    fun updateAuthor(author: Author): Author {
+        return authorService.updateAuthor(author) ?: throw HttpStatusException(HttpStatus.NOT_FOUND, "Author not found")
     }
 }
