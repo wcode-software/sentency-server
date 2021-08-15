@@ -11,5 +11,4 @@ RUN ./upx-3.96-amd64_linux/upx -7 /author-service/service
 FROM scratch
 EXPOSE 7000:7000
 COPY --from=build /author-service/service /service
-ENTRYPOINT ["./service"]
-
+CMD ["./service"]

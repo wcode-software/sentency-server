@@ -39,10 +39,12 @@ dependencies {
     // Database
     kapt("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
-    runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
+    runtimeOnly("io.micronaut.sql:micronaut-jdbc-tomcat")
     runtimeOnly("org.postgresql:postgresql")
-//    runtimeOnly("com.h2database:h2")
     testRuntimeOnly("com.h2database:h2")
+
+    // Sentry
+    implementation("io.sentry:sentry:5.0.1")
 }
 
 application {
