@@ -54,5 +54,5 @@ jobs:
           push: true
           context: ./
           tags: |
-            ghcr.io/wcode/${{ github.repository }}:${{ github.sha }}
-            ghcr.io/wcode/${{ github.repository }}:${{ github.event.release.tag_name }}
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
